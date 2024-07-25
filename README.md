@@ -1,1 +1,2 @@
-# Python-Arcade---Escape-Room
+# Escape-Room
+## Author: annguo1106, 
