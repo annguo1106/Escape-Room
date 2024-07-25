@@ -1,2 +1,2 @@
 # Escape-Room
-## Author: annguo1106, 
+## Author: annguo1106, Chia-yuu
