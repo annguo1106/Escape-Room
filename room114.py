@@ -1,4 +1,5 @@
 import arcade
+import utils
 
 SCREEN_WIDTH = 1000
 SCREEN_HEIGHT = 650
@@ -6,6 +7,8 @@ SCREEN_TITLE = "room 114"
 
 CONTROL_SCALING = 0.8
 CONTROL_ALPHA = 140     # the transparency of the img, range(0, 255)
+
+CONTROL_COR = [[-100, -100], [540, 10], [140, 10], [940, 10]]
 
 backpack = {
     'rag': False,
@@ -54,13 +57,26 @@ class Classroom(arcade.View):
         arcade.start_render()
         arcade.draw_text("classroom", 500, 325)
         # background
-        draw_background()
+        utils.draw_background()
         # control
         self.scene.draw()
         arcade.finish_render()
 
     def on_mouse_press(self, x: int, y: int, button: int, modifiers: int):
-        pass
+        # press control?
+        is_ctl = utils.press_control(x, y, self.direction)
+        if(is_ctl != -1):
+            # go left
+            if(is_ctl == 2):
+                nxt_view = Table()
+                self.window.show_view(nxt_view)
+            # go right
+            elif(is_ctl == 3):
+                nxt_view = Door()
+                self.window.show_view(nxt_view)
+            # default, should not happend
+            else:
+                print(f"in function on_mouse_press, x = {x}, y = {y}, dir = {is_ctl}")
 
     def on_key_press(self, key: int, modifiers: int):
         if(key == arcade.key.A):
@@ -116,13 +132,30 @@ class Blackboard(arcade.View):
         arcade.start_render()
         arcade.draw_text("blackboard", 500, 325)
         # background
-        draw_background()
+        utils.draw_background()
         # control
         self.scene.draw()
         arcade.finish_render()
 
     def on_mouse_press(self, x: int, y: int, button: int, modifiers: int):
-        pass
+        # press control?
+        is_ctl = utils.press_control(x, y, self.direction)
+        if(is_ctl != -1):
+            # go left
+            if(is_ctl == 2):
+                nxt_view = Stage()
+                self.window.show_view(nxt_view)
+            # go right
+            elif(is_ctl == 3):
+                nxt_view = Corner()
+                self.window.show_view(nxt_view)
+            # go back
+            elif(is_ctl == 1):
+                nxt_view = Classroom()
+                self.window.show_view(nxt_view)
+            # default, should not happend
+            else:
+                print(f"in function on_mouse_press, x = {x}, y = {y}, dir = {is_ctl}")
 
     def on_key_press(self, key: int, modifiers: int):
         if(key == arcade.key.A):
@@ -164,13 +197,22 @@ class Door(arcade.View):
         arcade.start_render()
         arcade.draw_text("door", 500, 325)
         # background
-        draw_background()
+        utils.draw_background()
         # control
         self.scene.draw()
         arcade.finish_render()
 
     def on_mouse_press(self, x: int, y: int, button: int, modifiers: int):
-        pass
+        # press control?
+        is_ctl = utils.press_control(x, y, self.direction)
+        if(is_ctl != -1):
+            # go back
+            if(is_ctl == 1):
+                nxt_view = Classroom()
+                self.window.show_view(nxt_view)
+            # default, should not happend
+            else:
+                print(f"in function on_mouse_press, x = {x}, y = {y}, dir = {is_ctl}")
 
     def on_key_press(self, key: int, modifiers: int):
         if(key == arcade.key.A):
@@ -212,13 +254,22 @@ class Stage(arcade.View):
         arcade.start_render()
         arcade.draw_text("stage", 500, 325)
         # background
-        draw_background()
+        utils.draw_background()
         # control
         self.scene.draw()
         arcade.finish_render()
 
     def on_mouse_press(self, x: int, y: int, button: int, modifiers: int):
-        pass
+        # press control?
+        is_ctl = utils.press_control(x, y, self.direction)
+        if(is_ctl != -1):
+            # go back
+            if(is_ctl == 1):
+                nxt_view = Blackboard()
+                self.window.show_view(nxt_view)
+            # default, should not happend
+            else:
+                print(f"in function on_mouse_press, x = {x}, y = {y}, dir = {is_ctl}")
 
     def on_key_press(self, key: int, modifiers: int):
         if(key == arcade.key.A):
@@ -260,13 +311,22 @@ class Corner(arcade.View):
         arcade.start_render()
         arcade.draw_text("corner", 500, 325)
         # background
-        draw_background()
+        utils.draw_background()
         # control
         self.scene.draw()
         arcade.finish_render()
 
     def on_mouse_press(self, x: int, y: int, button: int, modifiers: int):
-        pass
+        # press control?
+        is_ctl = utils.press_control(x, y, self.direction)
+        if(is_ctl != -1):
+            # go back
+            if(is_ctl == 1):
+                nxt_view = Blackboard()
+                self.window.show_view(nxt_view)
+            # default, should not happend
+            else:
+                print(f"in function on_mouse_press, x = {x}, y = {y}, dir = {is_ctl}")
 
     def on_key_press(self, key: int, modifiers: int):
         if(key == arcade.key.A):
@@ -308,13 +368,22 @@ class Table(arcade.View):
         arcade.start_render()
         arcade.draw_text("table", 500, 325)
         # background
-        draw_background()
+        utils.draw_background()
         # control
         self.scene.draw()
         arcade.finish_render()
 
     def on_mouse_press(self, x: int, y: int, button: int, modifiers: int):
-        pass
+        # press control?
+        is_ctl = utils.press_control(x, y, self.direction)
+        if(is_ctl != -1):
+            # go back
+            if(is_ctl == 1):
+                nxt_view = Classroom()
+                self.window.show_view(nxt_view)
+            # default, should not happend
+            else:
+                print(f"in function on_mouse_press, x = {x}, y = {y}, dir = {is_ctl}")
 
     def on_key_press(self, key: int, modifiers: int):
         if(key == arcade.key.A):
@@ -336,16 +405,7 @@ class Table(arcade.View):
             nxt_view = Table()
             self.window.show_view(nxt_view)
 
-def draw_background():
-    # background
-    arcade.set_background_color(arcade.csscolor.CORNFLOWER_BLUE)
 
-    # 背包背景
-    arcade.draw_rectangle_filled(60, 325, 120, 650, arcade.color.ARMY_GREEN)
-    arcade.draw_rectangle_filled(60, 325, 100, 630, arcade.color.AVOCADO)
-    arcade.draw_rectangle_filled(60, 620, 80, 30, arcade.color.APPLE_GREEN)
-    arcade.draw_text("背包", 35, 610, arcade.color.BLACK, 16)
-    # pass
 
 def main():
     window = MyGame()
