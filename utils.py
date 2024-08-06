@@ -34,3 +34,27 @@ def press_control(x, y, direction):
             y >= CONTROL_COR[i][1] and y<= CONTROL_COR[i][1]+40):
             return i
     return -1    # doesn't click on control
+
+'''
+Tell which scene is clicked
+Parameter:
+    x, y: the position of the mouse
+    cord: the list of the coordination of each scene
+    dir: the direction of the valid region (the rectangle's direction)
+         1: 230 * 150, 2: 150 * 230
+Return:
+    (int) scene: which scene is clicked
+    0: front
+    1: down(back) (should not happen)
+    2: left
+    3: right
+    -1: doesn't click on the scene that can go to the next scene
+'''
+def click_scene(x, y, cord, dir):
+    h = 150 if dir == 1 else 230
+    w = 230 if dir == 1 else 150
+    for i in range(4):
+        if(x >= cord[i][0] and x <= cord[i][0] + w and
+           y >= cord[i][1] and y <= cord[i][1] + h):
+            return i
+    return -1   # doesn't click on valid scene
