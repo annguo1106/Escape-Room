@@ -1,11 +1,13 @@
 import arcade
+import sceneUtil
 
-class maintheme(arcade.View):
+class MainTheme(sceneUtil.Scenes):
     def __init__(self):
-        self.scene = arcade.Scene()
-        self.direction = [True, False, True, True]
-        
-        self.backpack_list = []
+        super().__init__()
         
     def setup(self):
-        pass
+        super().setup()
+        self.direction = [True, False, False, False]
+        self.scene_name = "mainTheme"
+
+        

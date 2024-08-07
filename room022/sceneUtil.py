@@ -2,9 +2,8 @@ import arcade
 import arcade.csscolor
 import arcade.csscolor
 from itemList import backpack_list, item_list
-from constants import SCREEN_HEIGHT, SCREEN_WIDTH
 
-class Scene(arcade.View):
+class Scenes(arcade.View):
 	def __init__(self):
 		super.__init__()
 		self.scene = arcade.Scene()
@@ -66,8 +65,7 @@ class Scene(arcade.View):
 	
 	def on_mouse_press(self, x: int, y: int, button: int, modifires: int):
 		click = False
-
-		# click items in backpack
+  		# click items in backpack
 		for item in self.backpack_list:
 			sp = item["sprite"]
 			if(self.pre_action == "click " + item["name"] and not sp.collides_with_ppint((x, y))):

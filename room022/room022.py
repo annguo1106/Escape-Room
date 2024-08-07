@@ -3,86 +3,32 @@ from sceneUtil import Scene
 from itemList import item_list, backpack_list
 from dialogueUtil import DialogueBox
 from constants import SCREEN_WIDTH, SCREEN_HEIGHT 
-
+from mainTheme import MainTheme
 class Game(arcade.Window):
 	def __init__(self):
 		super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, "ROOM 022")
-		self.current_scene = None
-		self.dialogue_box = None
-		self.scenes = {}
-		self.setup()
-
+		self.current_view = MainTheme()
+		self.show_view(self.current_view)
 	def setup(self):
-		Room_1 = Scene("images/Room_1.jpg")
-		item_cabinet = Item("images/cabinet_close.png", 0.5, "cabinet", "this is a cabinet")
-		# item_cabinet.position((400, 200))
-		item_cabinet.center_x = 400
-		item_cabinet.center_y = 400
-		item_cabinet.show()
-
-		item_cabinet_open = Item("images/cabinet_open.png", 0.5, "cabinet_open", "open the cabinet")
-		# item_cabinet_open.position((400, 200))
-		item_cabinet_open.center_x = 400
-		item_cabinet_open.center_y = 400
-
-		item_key = Item("images/key.png", 0.5, "key", "You found a key!")
-		# item_key.position((400, 300))
-		item_key.center_x = 400
-		item_key.center_y = 500
-
-		Room_1.items.append(item_cabinet)
-		Room_1.items.append(item_cabinet_open)
-		Room_1.items.append(item_key)
-
-		Room_1.items_dict["cabinet"] = item_cabinet
-		Room_1.items_dict["cabinet_open"] = item_cabinet_open
-		Room_1.items_dict["key"] = item_key
-
-		self.scenes["Room_1"] = Room_1
-
-		self.current_scene = self.scenes["Room_1"]
-		self.dialogue_box = DialogueBox("")
-
-	def on_draw(self):
-		arcade.start_render()
-		self.current_scene.draw()
-		self.dialogue_box.draw()
+		pass
 
 	def on_mouse_press(self, x, y, button, modifiers):
-		if self.dialogue_box.visible:
-			self.dialogue_box.hide()
-		else:
-			item = self.current_scene.on_click(x, y)
-			if item:
-				if item.name == "cabinet":
-					if item.visible:              
-						self.dialogue_box.text = item.dialogue
-						self.dialogue_box.show()
-						item.hide()
-						item = self.current_scene.items_dict["cabinet_open"]
-						item.show()
-						item = self.current_scene.items_dict["key"]
-						item.show()
-				if item.name == "cabinet_open":
-					if item.visible:
-						self.dialogue_box.text = item.dialogue
-						self.dialogue_box.show()
-						item.visible = False
-						item = self.current_scene.items_dict["cabinet"]
-						item.show()
-						item = self.current_scene.items_dict["key"]
-						item.hide()
-				if item.name == "key":
-					if item.visible:
-						self.dialogue_box.text = item.dialogue
-						self.dialogue_box.show()
-						item.visible = False
-	def on_key_press(self, key, modifires):
-		if key == arcade.key.SPACE:
-			pass
+		# do control
+		CONTROL_COR = [[-100, -100], [540, 10], [140, 10], [940, 10]]
+		next = "-1"
+		for i in range(4):
+			if(self.current_view.direction[i] != "None" and
+      			x >= CONTROL_COR[i][0] and x <= CONTROL_COR[i][0]+40 and
+         		y >= CONTROL_COR[i][1] and y <= CONTROL_COR[i][1] + 40):
+				next = self.current_view.direction[i]
+				break
+		if next != "-1":
+			next_view = None
+			if next == "mainTheme":
+				next_view = MainTheme()
+			
+			self.show_view(next_view)
 
-	def update(self, delta_time):
-		self.current_scene.update()
 
 if __name__ == "__main__":
 	window = Game()

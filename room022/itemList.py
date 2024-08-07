@@ -1,5 +1,3 @@
-import arcade
-
 # states: 0: not display, 1: display, 2: used
 item_list = [
     {
