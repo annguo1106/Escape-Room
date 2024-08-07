@@ -1,12 +1,16 @@
 import arcade
 
 # states: 0: not display, 1: display, 2: used
-items = [
+item_list = [
     {
         "name": "cabinet",
         "sprite": None,
         "states": 1,
-        "path": "img/items/..."
+        "path": "img/items/...",
+        "scale": 0.08,
+        "place": "maintheme",
+        "x": None,
+        "y": None
     },
     {
         "name": "cabinet",
@@ -16,7 +20,7 @@ items = [
     }
 ]
 
-backpack = [
+backpack_list = [
     {
         "name": "cabinet",
         "sprite": None,

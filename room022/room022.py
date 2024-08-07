@@ -1,6 +1,6 @@
 import arcade
 from sceneUtil import Scene
-from itemUtil import Item
+from itemList import item_list, backpack_list
 from dialogueUtil import DialogueBox
 from constants import SCREEN_WIDTH, SCREEN_HEIGHT 
 
