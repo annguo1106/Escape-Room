@@ -1,56 +1,12 @@
 import arcade
-
-SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 600
-SCREEN_TITLE = "Room - 1"
-
-class Scene:
-	def __init__(self, background_image):
-		self.background = arcade.load_texture(background_image)
-		self.items = arcade.SpriteList()
-		self.items_dict = {}
-		self.dialogue = None
-  
-	def draw(self):
-		arcade.draw_lrwh_rectangle_textured(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, self.background)
-		self.items.draw()
-	
-	def update(self):
-		pass
-	
-	def on_click(self, x, y):
-		for item in self.items:
-			if item.collides_with_point((x, y)):
-				return item
-		return None
-      
-class Item(arcade.Sprite):
-	def __init__(self, image, scale, name, dialogue):
-		super().__init__(image, scale)
-		self.dialogue = dialogue
-		self.name = name
-		self.visible = False
-	def show(self):
-		self.visible = True
-	def hide(self):
-		self.visible = False
-
-class DialogueBox:
-	def __init__(self, text):
-		self.text = text
-		self.visible = False
-	def show(self):
-		self.visible = True
-	def hide(self):
-		self.visible = False
-	def draw(self):
-		if self.visible:
-			arcade.draw_rectangle_filled(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 4, SCREEN_WIDTH - 100, 100, arcade.color.BLACK)
-			arcade.draw_text(self.text, SCREEN_WIDTH // 2, SCREEN_HEIGHT // 4, arcade.color.WHITE, 16, width=SCREEN_WIDTH - 120, align="center", anchor_x="center", anchor_y="center")
+from sceneUtil import Scene
+from itemUtil import Item
+from dialogueUtil import DialogueBox
+from constants import SCREEN_WIDTH, SCREEN_HEIGHT 
 
 class Game(arcade.Window):
 	def __init__(self):
-		super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
+		super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, "ROOM 022")
 		self.current_scene = None
 		self.dialogue_box = None
 		self.scenes = {}
@@ -129,5 +85,5 @@ class Game(arcade.Window):
 		self.current_scene.update()
 
 if __name__ == "__main__":
-		window = Game()
-		arcade.run()
+	window = Game()
+	arcade.run()
