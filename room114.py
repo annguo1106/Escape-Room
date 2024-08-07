@@ -1,6 +1,10 @@
 import arcade
 import arcade.color
+import arcade.resources
+import arcade.resources
 import utils
+import gc
+import psutil
 
 SCREEN_WIDTH = 1000
 SCREEN_HEIGHT = 650
@@ -12,35 +16,36 @@ CONTROL_ALPHA = 140     # the transparency of the img, range(0, 255)
 CONTROL_COR = [[-100, -100], [540, 10], [140, 10], [940, 10]]
 
 # items that should show in backpack
+# display: 0: 未拿取, 1: 已拿取, 2: 用完了(不可以重複拿取)
 backpack = [
     {   'name': "rag",
         'sprite': None,
-        'display': False,
+        'display': 0,
         'path': "img/backpack/backpack_rag.jpg"
     },
     {   'name': "phone",
         'sprite': None,
-        'display': False,
+        'display': 0,
         'path': None
     },
     {   'name': "charger",
         'sprite': None,
-        'display': False,
+        'display': 0,
         'path': "img/backpack/backpack_charger.jpg"
     },
     {   'name': "ladder",
         'sprite': None,
-        'display': False,
+        'display': 0,
         'path': "img/backpack/backpack_ladder.jpg"
     },
     {   'name': "eraser",
         'sprite': None,
-        'display': False,
+        'display': 0,
         'path': "img/backpack/backpack_eraser.jpg"
     },
     {   'name': "red pen",
         'sprite': None,
-        'display': False,
+        'display': 0,
         'path': "img/backpack/backpack_red pen.jpg"
     }
 ]
@@ -82,6 +87,7 @@ class Classroom(arcade.View):
         super().__init__()
         self.scene = arcade.Scene()
         self.direction = [True, False, True, True]  # 紀錄前後左右是否可以到達別的場景
+        self.sprite_list = arcade.SpriteList()
 
         self.backpack_list = [] # a list to store the data of the items in the backpack
 
@@ -96,6 +102,7 @@ class Classroom(arcade.View):
         bg.center_x = 560
         bg.center_y = 325
         self.scene.add_sprite("Background", bg)
+        self.sprite_list.append(bg)
 
         # control
         arrow_left = arcade.Sprite("img/control/arrow_left.png", CONTROL_SCALING)
@@ -103,19 +110,21 @@ class Classroom(arcade.View):
         arrow_left.center_y = 30
         arrow_left.alpha = CONTROL_ALPHA
         self.scene.add_sprite("Control", arrow_left)
+        self.sprite_list.append(arrow_left)
 
         arrow_right = arcade.Sprite("img/control/arrow_right.png", CONTROL_SCALING)
         arrow_right.center_x = 960
         arrow_right.center_y = 30
         arrow_right.alpha = CONTROL_ALPHA
         self.scene.add_sprite("Control", arrow_right)
+        self.sprite_list.append(arrow_right)
 
         # backpack
         y = 550
         for i in range(len(backpack)):
             item = backpack[i]
             # should show in backpack, create its sprite
-            if(item["display"]):
+            if(item["display"] == 1):
                 sp = arcade.Sprite(item["path"], 0.08)
                 sp.position = (60, y)
                 y -= 90
@@ -126,8 +135,12 @@ class Classroom(arcade.View):
                     "name": item["name"],
                     "click": False
                 })
+                self.sprite_list.append(sp)
 
     def on_show(self):
+        virtual_memory = psutil.virtual_memory()
+        used_memory_percentage = virtual_memory.percent
+        # print(f"in classroom, Current memory usage: {used_memory_percentage}%")
         self.setup()
 
     def on_draw(self):
@@ -168,12 +181,21 @@ class Classroom(arcade.View):
         # press control?
         is_ctl = utils.press_control(x, y, self.direction)
         if(not click and is_ctl != -1):
+            # release resources
+            for sp in self.sprite_list:
+                del sp
+            arcade.cleanup_texture_cache()
+            gc.collect()
+            virtual_memory = psutil.virtual_memory()
+            used_memory_percentage = virtual_memory.percent
+            # print(f"Current memory usage: {used_memory_percentage}%")
             # go left
             if(is_ctl == 2):
                 nxt_view = Table()
                 self.window.show_view(nxt_view)
             # go right
             elif(is_ctl == 3):
+                # release resources
                 nxt_view = Door()
                 self.window.show_view(nxt_view)
             # default, should not happen
@@ -184,6 +206,14 @@ class Classroom(arcade.View):
         scene_list = [[450, 410], [-9999, -9999], [120, 130], [770, 130]]     # U, D, L, R
         is_scene = utils.click_scene(x, y, scene_list, 1)
         if(not click and is_scene != -1):
+            # release resources
+            for sp in self.sprite_list:
+                del sp
+            arcade.cleanup_texture_cache()
+            gc.collect()
+            virtual_memory = psutil.virtual_memory()
+            used_memory_percentage = virtual_memory.percent
+            # print(f"Current memory usage: {used_memory_percentage}%")
             # go front
             if(is_scene == 0):
                 nxt_view = Blackboard()
@@ -225,6 +255,7 @@ class Blackboard(arcade.View):
         super().__init__()
         self.scene = arcade.Scene()
         self.direction = [False, True, True, True]  # 紀錄前後左右是否可以到達別的場景
+        self.sprite_list = arcade.SpriteList()
         
         # record item's data
         self.item_list = []     # a list to store the data of the items in the scene
@@ -241,6 +272,7 @@ class Blackboard(arcade.View):
         bg.center_x = 560
         bg.center_y = 325
         self.scene.add_sprite("Background", bg)
+        self.sprite_list.append(bg)
 
         # control
         arrow_left = arcade.Sprite("img/control/arrow_left.png", CONTROL_SCALING)
@@ -248,18 +280,21 @@ class Blackboard(arcade.View):
         arrow_left.center_y = 30
         arrow_left.alpha = CONTROL_ALPHA
         self.scene.add_sprite("Control", arrow_left)
+        self.sprite_list.append(arrow_left)
 
         arrow_right = arcade.Sprite("img/control/arrow_right.png", CONTROL_SCALING)
         arrow_right.center_x = 960
         arrow_right.center_y = 30
         arrow_right.alpha = CONTROL_ALPHA
         self.scene.add_sprite("Control", arrow_right)
+        self.sprite_list.append(arrow_right)
 
         arrow_down = arcade.Sprite("img/control/arrow_down.png", CONTROL_SCALING)
         arrow_down.center_x = 560
         arrow_down.center_y = 30
         arrow_down.alpha = CONTROL_ALPHA
         self.scene.add_sprite("Control", arrow_down)
+        self.sprite_list.append(arrow_down)
 
         # items
         exam_paper = arcade.Sprite("img/items/blackboard_考卷.jpg", 0.1)
@@ -271,6 +306,7 @@ class Blackboard(arcade.View):
             "name": "exam_paper",
             "show big": False
         })
+        self.sprite_list.append(exam_paper)
 
         dirty_blcakboard = arcade.Sprite("img/items/blackboard_髒黑板.jpg", 0.18)
         dirty_blcakboard.center_x = 454
@@ -281,6 +317,8 @@ class Blackboard(arcade.View):
             "name": "dirty_blackboard",
             "show big": False
         })
+        self.sprite_list.append(dirty_blcakboard)
+
         ladder = arcade.Sprite("img/items/blackboard_ladder.jpg", 0.245)
         ladder.position = (390, 220)
         self.scene.add_sprite("Items", ladder)
@@ -289,13 +327,14 @@ class Blackboard(arcade.View):
             "name": "ladder",
             "show big": False
         })
+        self.sprite_list.append(ladder)
 
         # backpack
         y = 550
         for i in range(len(backpack)):
             item = backpack[i]
             # should show in backpack, create its sprite
-            if(item["display"]):
+            if(item["display"] == 1):
                 sp = arcade.Sprite(item["path"], 0.08)
                 sp.position = (60, y)
                 y -= 90
@@ -313,9 +352,13 @@ class Blackboard(arcade.View):
                     "name": item["name"],
                     "click": False
                 })
+                self.sprite_list.append(sp)
 
     def on_show(self):
         self.setup()
+        virtual_memory = psutil.virtual_memory()
+        used_memory_percentage = virtual_memory.percent
+        # print(f"in blackboard, Current memory usage: {used_memory_percentage}%")
         
     def on_draw(self):
         arcade.start_render()
@@ -342,11 +385,11 @@ class Blackboard(arcade.View):
         # backpack
         if(self.has_backpack):
             self.scene["Backpack"].draw()
-        if(backpack[3]["display"]):
+        if(backpack[3]["display"] == 1):
             self.scene["ladder"].draw()
-        if(backpack[4]["display"]):
+        if(backpack[4]["display"] == 1):
             self.scene["eraser"].draw()
-        if(backpack[5]["display"]):
+        if(backpack[5]["display"] == 1):
             self.scene["red pen"].draw()
 
         # debug
@@ -361,12 +404,6 @@ class Blackboard(arcade.View):
         arcade.finish_render()
 
     def on_mouse_press(self, x: int, y: int, button: int, modifiers: int):
-        # # debug
-        # for item in self.item_list:
-        #     sp = item["sprite"]
-        #     if(sp.collides_with_point((x, y))):
-        #         print(item["name"])
-
         click = False
         # click item in scene
         exam_paper = self.item_list[0]["sprite"]
@@ -401,7 +438,7 @@ class Blackboard(arcade.View):
             if(self.pre_action == "click red pen"):
                 big = arcade.load_texture("img/items/blackboard_考卷_放大批改.jpg")
                 display_items["exam_paper"] = 2     # 紀錄為已批改
-                backpack[5]["display"] = False
+                backpack[5]["display"] = 2
             # 批改過了，顯示批改
             elif(display_items["exam_paper"] == 2):
                 big = arcade.load_texture("img/items/blackboard_考卷_放大批改.jpg")
@@ -421,7 +458,7 @@ class Blackboard(arcade.View):
             if(display_items["ladder"] and self.pre_action == "click eraser"):
                 big = arcade.load_texture("img/items/blackboard_髒黑板_放大乾淨.jpg")
                 display_items["eraser"] = True
-                backpack[4]["display"] = False
+                backpack[4]["display"] = 2
                 display_items["dirty_blackboard"] = 2
                 self.pre_action = None
             # 之前擦乾淨了
@@ -430,7 +467,7 @@ class Blackboard(arcade.View):
             # 拿梯子，把梯子放上去
             elif(self.pre_action == "click ladder"):
                 display_items["ladder"] = True
-                backpack[3]["display"] = False
+                backpack[3]["display"] = 2
                 display_items["dirty_blackboard"] = 1
                 self.pre_action = None
                 return
@@ -477,6 +514,14 @@ class Blackboard(arcade.View):
         # press control?
         is_ctl = utils.press_control(x, y, self.direction)
         if(not click and is_ctl != -1):
+            # release resources
+            for sp in self.sprite_list:
+                del sp
+            arcade.cleanup_texture_cache()
+            gc.collect()
+            virtual_memory = psutil.virtual_memory()
+            used_memory_percentage = virtual_memory.percent
+            # print(f"Current memory usage: {used_memory_percentage}%")
             # go left
             if(is_ctl == 2):
                 nxt_view = Stage()
@@ -497,6 +542,11 @@ class Blackboard(arcade.View):
         scene_list = [[-9999, -9999], [-9999, -9999], [120, 50], [850, 50]]     # U, D, L, R
         is_scene = utils.click_scene(x, y, scene_list, 2)
         if(not click and is_scene != -1):
+            # release resources
+            for sp in self.sprite_list:
+                del sp
+            arcade.cleanup_texture_cache()
+            gc.collect()
             # go left
             if(is_scene == 2):
                 nxt_view = Stage()
@@ -534,6 +584,7 @@ class Door(arcade.View):
         super().__init__()
         self.scene = arcade.Scene()
         self.direction = [False, True, False, False]  # 紀錄前後左右是否可以到達別的場景
+        self.sprite_list = arcade.SpriteList()
 
         # record item's data
         self.item_list = []     # a list to store the data of the items in the scene
@@ -557,6 +608,7 @@ class Door(arcade.View):
         bg.center_x = 560
         bg.center_y = 325
         self.scene.add_sprite("Background", bg)
+        self.sprite_list.append(bg)
 
         # control
         arrow_down = arcade.Sprite("img/control/arrow_down.png", CONTROL_SCALING)
@@ -564,6 +616,7 @@ class Door(arcade.View):
         arrow_down.center_y = 30
         arrow_down.alpha = CONTROL_ALPHA
         self.scene.add_sprite("Control", arrow_down)
+        self.sprite_list.append(arrow_down)
 
         # items
         oj_box = arcade.Sprite("img/items/door_oj 寶箱.jpg", 0.135)
@@ -574,6 +627,7 @@ class Door(arcade.View):
             "name": "oj_box",
             "show big": False
         })
+        self.sprite_list.append(oj_box)
 
         door = arcade.Sprite("img/items/door.jpg", 0.27)
         door.position = (640, 225)
@@ -583,6 +637,7 @@ class Door(arcade.View):
             "name": "door",
             "show big": False
         })
+        self.sprite_list.append(door)
 
         rag = arcade.Sprite("img/items/door_抹布.jpg", 0.1)
         rag.position = (190, 150)
@@ -592,6 +647,7 @@ class Door(arcade.View):
             "name": "rag",
             "show big": False
         })
+        self.sprite_list.append(rag)
 
         # 解謎
         # door
@@ -606,6 +662,8 @@ class Door(arcade.View):
                 "click": False,
                 "time": 0
             })
+            self.sprite_list.append(btn)
+
         
         # oj box
         x = 374
@@ -618,17 +676,19 @@ class Door(arcade.View):
                 "sprite": color,
                 "color": 0
             })
+            self.sprite_list.append(color)
         
         # backpack
         y = 550
         for i in range(len(backpack)):
             item = backpack[i]
             # should show in backpack, create its sprite
-            if(item["display"]):
+            if(item["display"] == 1):
                 sp = arcade.Sprite(item["path"], 0.08)
                 sp.position = (60, y)
                 y -= 90
                 self.scene.add_sprite("Backpack", sp)
+                self.sprite_list.append(sp)
                 self.backpack_list.append({
                     "sprite": sp,
                     "name": item["name"],
@@ -651,7 +711,8 @@ class Door(arcade.View):
                 "name": "backpack_rag",
                 "click": False
             })
-        
+            self.sprite_list.append(backpack_rag)
+
         # ladder in scene(oj box), may be added to backpack
         if(not backpack[3]["display"]):
             backpack_ladder = arcade.Sprite("img/backpack/backpack_ladder.jpg", 0.08)
@@ -662,9 +723,13 @@ class Door(arcade.View):
                 "name": "backpack_ladder",
                 "click": False
             })
+            self.sprite_list.append(backpack_ladder)
 
     def on_show(self):
         self.setup()
+        virtual_memory = psutil.virtual_memory()
+        used_memory_percentage = virtual_memory.percent
+        # print(f"in door, Current memory usage: {used_memory_percentage}%")
 
     def on_draw(self):
         arcade.start_render()
@@ -716,10 +781,10 @@ class Door(arcade.View):
         if(self.has_backpack):
             self.scene["Backpack"].draw()
         # backpack rag
-        if(backpack[0]["display"] and not self.has_rag):
+        if(backpack[0]["display"] == 1 and not self.has_rag):
             self.scene["backpack_rag"].draw()
         # backpack ladder
-        if(backpack[3]["display"] and not self.has_ladder):
+        if(backpack[3]["display"] == 1 and not self.has_ladder):
             self.scene["backpack_ladder"].draw()
         # control
         self.scene["Control"].draw()
@@ -736,14 +801,14 @@ class Door(arcade.View):
         rag = self.item_list[2]["sprite"]
         
         # click rag, add to backpack
-        if(rag.collides_with_point((x, y))):
+        if(backpack[0]["display"] == 0 and rag.collides_with_point((x, y))):
             display_items["rag"] = False
             backpack[0]["display"] = True
         
         # click items in scene
         # exist big oj_box
         if(self.item_list[0]["show big"] and not oj_box.collides_with_point((x, y))):
-            # print("exist big oj box")
+            # # print("exist big oj box")
             ori = arcade.load_texture("img/items/door_oj 寶箱.jpg")
             oj_box.texture = ori
             oj_box.hit_box = oj_box.texture.hit_box_points
@@ -760,7 +825,7 @@ class Door(arcade.View):
                 self.color_list[i]["sprite"].texture = arcade.load_texture("img/items/door_oj 寶箱0.jpg")
 
             # if box open, add ladder to backpack
-            if(display_items["oj_box"] == 2):
+            if(backpack[3]["display"] == 0 and display_items["oj_box"] == 2):
                 backpack[3]["display"] = True
             
             return
@@ -782,6 +847,14 @@ class Door(arcade.View):
         elif(is_ctl != -1):
             # go back
             if(is_ctl == 1):
+                # release resources
+                for sp in self.sprite_list:
+                    del sp
+                arcade.cleanup_texture_cache()
+                gc.collect()
+                virtual_memory = psutil.virtual_memory()
+                used_memory_percentage = virtual_memory.percent
+                # print(f"Current memory usage: {used_memory_percentage}%")
                 nxt_view = Classroom()
                 self.window.show_view(nxt_view)
             # default, should not happend
@@ -916,6 +989,7 @@ class Stage(arcade.View):
         super().__init__()
         self.scene = arcade.Scene()
         self.direction = [False, True, False, False]  # 紀錄前後左右是否可以到達別的場景
+        self.sprite_list = arcade.SpriteList()
 
         self.item_list = []         # items sprites
         self.backpack_list = []     # backpack items sprite
@@ -926,6 +1000,10 @@ class Stage(arcade.View):
         self.has_backpack = False
         self.pre_action = None
         self.show_drawer = 0                        # 1: 解謎, 2: 打開獲得板擦, 0: leave
+        if(display_items["eraser"] == 0):
+            self.show_drawer = 0
+        else:
+            self.show_drawer = 3
         self.drawer_pw = [[0]*4 for _ in range(4)]  # drawer's password
         self.has_eraser = False
         self.computer_pw = [8] * 5
@@ -937,6 +1015,7 @@ class Stage(arcade.View):
         bg.center_x = 563
         bg.center_y = 325
         self.scene.add_sprite("Background", bg)
+        self.sprite_list.append(bg)
 
         # control
         arrow_down = arcade.Sprite("img/control/arrow_down.png", CONTROL_SCALING)
@@ -944,6 +1023,7 @@ class Stage(arcade.View):
         arrow_down.center_y = 30
         arrow_down.alpha = CONTROL_ALPHA
         self.scene.add_sprite("Control", arrow_down)
+        self.sprite_list.append(arrow_down)
 
         # items
         computer = arcade.Sprite("img/items/stage_computer.jpg", 0.208)
@@ -954,10 +1034,15 @@ class Stage(arcade.View):
             "name": "mouse_computer",
             "show big": False
         })
+        self.sprite_list.append(computer)
 
-        drawer_big = arcade.Sprite("img/items/stage_drawer_大解謎.jpg", 0.55)
+        if(self.show_drawer == 0):
+            drawer_big = arcade.Sprite("img/items/stage_drawer_大解謎.jpg", 0.55)
+        else:
+            drawer_big = arcade.Sprite("img/items/stage_drawer_大開.jpg", 0.55)
         drawer_big.position = (560, 325)
         self.scene.add_sprite("drawer", drawer_big)
+        self.sprite_list.append(drawer_big)
 
         # 解謎
         # 電腦密碼
@@ -971,6 +1056,7 @@ class Stage(arcade.View):
                 "sprite": digit,
                 "val": 8
             })
+            self.sprite_list.append(digit)
 
         # 電腦滑鼠軌跡
         mouse = arcade.Sprite("img/control/mouse.png")
@@ -980,6 +1066,7 @@ class Stage(arcade.View):
             "sprite": mouse,
             "time": 0
         })
+        self.sprite_list.append(mouse)
 
         # 抽屜
         y = 475
@@ -994,6 +1081,7 @@ class Stage(arcade.View):
                     "sprite": block,
                     "state": 0
                 })
+                self.sprite_list.append(block)
             y -= 100
 
         # backpack
@@ -1001,7 +1089,7 @@ class Stage(arcade.View):
         for i in range(len(backpack)):
             item = backpack[i]
             # should show in backpack, create its sprite
-            if(item["display"]):
+            if(item["display"] == 1):
                 sp = arcade.Sprite(item["path"], 0.08)
                 sp.position = (60, y)
                 y -= 90
@@ -1011,6 +1099,7 @@ class Stage(arcade.View):
                     "name": item["name"],
                     "click": False
                 })
+                self.sprite_list.append(sp)
                 self.has_backpack = True
                 if(item["name"] == "eraser"):
                     self.has_eraser = True
@@ -1025,9 +1114,13 @@ class Stage(arcade.View):
                 "name": "eraser",
                 "click": False
             })
+            self.sprite_list.append(eraser)
 
     def on_show(self):
         self.setup()
+        virtual_memory = psutil.virtual_memory()
+        used_memory_percentage = virtual_memory.percent
+        # print(f"in stage, Current memory usage: {used_memory_percentage}%")
 
     def on_draw(self):
         arcade.start_render()
@@ -1055,7 +1148,7 @@ class Stage(arcade.View):
         if(self.has_backpack):
             self.scene["Backpack"].draw()
 
-        if(backpack[4]["display"] and not self.has_eraser):
+        if(backpack[4]["display"] == 1 and not self.has_eraser):
             self.scene["eraser"].draw()
 
         # 解謎
@@ -1108,7 +1201,7 @@ class Stage(arcade.View):
                 self.block_list[i]["state"] = 0
                 self.block_list[i]["sprite"].texture = arcade.load_texture("img/items/stage_drawer0.jpg")
                 self.drawer_pw[int(i/4)][i%4] = 0
-            if(display_items["eraser"] == 1):
+            if(backpack[4]["display"] == 0 and display_items["eraser"] == 1):
                 backpack[4]["display"] = True
         
         # click computer
@@ -1183,6 +1276,14 @@ class Stage(arcade.View):
         elif(is_ctl != -1):
             # go back
             if(is_ctl == 1):
+                # release resources
+                for sp in self.sprite_list:
+                    del sp
+                arcade.cleanup_texture_cache()
+                gc.collect()
+                virtual_memory = psutil.virtual_memory()
+                used_memory_percentage = virtual_memory.percent
+                # print(f"Current memory usage: {used_memory_percentage}%")
                 nxt_view = Blackboard()
                 self.window.show_view(nxt_view)
             # default, should not happend
@@ -1259,6 +1360,7 @@ class Corner(arcade.View):
         super().__init__()
         self.scene = arcade.Scene()
         self.direction = [False, True, False, False]  # 紀錄前後左右是否可以到達別的場景
+        self.sprite_list = arcade.SpriteList()
 
         # record item's data
         self.item_list = []     # a list to store the data of the items in the scene
@@ -1280,6 +1382,7 @@ class Corner(arcade.View):
         bg.center_x = 560
         bg.center_y = 325
         self.scene.add_sprite("Background", bg)
+        self.sprite_list.append(bg)
 
         # control
         arrow_down = arcade.Sprite("img/control/arrow_down.png", CONTROL_SCALING)
@@ -1287,6 +1390,7 @@ class Corner(arcade.View):
         arrow_down.center_y = 30
         arrow_down.alpha = CONTROL_ALPHA
         self.scene.add_sprite("Control", arrow_down)
+        self.sprite_list.append(arrow_down)
 
         # items
         box = arcade.Sprite("img/items/corner_box.jpg", 0.24)
@@ -1297,6 +1401,7 @@ class Corner(arcade.View):
             "name": "red_pen_box",
             "show big": False
         })
+        self.sprite_list.append(box)
 
         phone = arcade.Sprite("img/items/corner_phone.jpg", 0.12)
         phone.position = (410, 240)
@@ -1306,6 +1411,7 @@ class Corner(arcade.View):
             "name": "phone",
             "show big": False
         })
+        self.sprite_list.append(phone)
 
         # 解謎
         x = 430
@@ -1318,6 +1424,8 @@ class Corner(arcade.View):
                 "sprite": word,
                 "char": 0
             })
+            self.sprite_list.append(word)
+
 
         x = 430
         for i in range(3):
@@ -1329,13 +1437,15 @@ class Corner(arcade.View):
             self.arrow_list.append({
                 "sprite": arrow,
             })
+            self.sprite_list.append(arrow)
+
 
         # backpack
         y = 550
         for i in range(len(backpack)):
             item = backpack[i]
             # should show in backpack, create its sprite
-            if(item["display"]):
+            if(item["display"] == 1):
                 sp = arcade.Sprite(item["path"], 0.08)
                 sp.position = (60, y)
                 y -= 90
@@ -1350,6 +1460,7 @@ class Corner(arcade.View):
                     "name": item["name"],
                     "click": False
                 })
+                self.sprite_list.append(sp)
 
         if(not backpack[2]["display"]):
             charger = arcade.Sprite("img/backpack/backpack_charger.jpg", 0.08)
@@ -1361,6 +1472,7 @@ class Corner(arcade.View):
                 "name": "backpack_charger",
                 "click": False
             })
+            self.sprite_list.append(charger)
 
         if(not backpack[5]["display"]):
             red_pen = arcade.Sprite("img/backpack/backpack_red pen.jpg", 0.08)
@@ -1372,9 +1484,13 @@ class Corner(arcade.View):
                 "name": "backpack_red_pen",
                 "click": False
             })
+            self.sprite_list.append(red_pen)
 
     def on_show(self):
         self.setup()
+        virtual_memory = psutil.virtual_memory()
+        used_memory_percentage = virtual_memory.percent
+        # print(f"in corner, Current memory usage: {used_memory_percentage}%")
 
     def on_draw(self):
         arcade.start_render()
@@ -1407,10 +1523,10 @@ class Corner(arcade.View):
         if(self.has_backpack):
             self.scene["Backpack"].draw()
 
-        if(not self.has_charger and backpack[2]["display"]):
+        if(not self.has_charger and backpack[2]["display"] == 1):
             self.scene["backpack_charger"].draw()
 
-        if(not self.has_red_pen and backpack[5]["display"]):
+        if(not self.has_red_pen and backpack[5]["display"] == 1):
             self.scene["backpack_red_pen"].draw()
 
         # debug
@@ -1442,7 +1558,7 @@ class Corner(arcade.View):
             for i in range(3):
                 self.box_pw[i] = 0
                 self.word_list[i]["sprite"].texture = arcade.load_texture("img/items/corner_box0.jpg")
-            if(display_items["red_pen_box"] == 2):
+            if(backpack[5]["display"] == 0 and display_items["red_pen_box"] == 2):
                 backpack[5]["display"] = True
         
         # exist phone
@@ -1459,7 +1575,7 @@ class Corner(arcade.View):
                 for i in range(3):
                     self.arrow_list[i]["sprite"].angle = 180
                     self.phone_pw[i] = 180
-            elif(display_items["phone"] == 4):
+            elif(backpack[2]["display"] == 0 and display_items["phone"] == 4):
                 # get charger
                 backpack[2]["display"] = True
 
@@ -1563,6 +1679,14 @@ class Corner(arcade.View):
         if(not click and is_ctl != -1):
             # go back
             if(is_ctl == 1):
+                # release resources
+                for sp in self.sprite_list:
+                    del sp
+                arcade.cleanup_texture_cache()
+                gc.collect()
+                virtual_memory = psutil.virtual_memory()
+                used_memory_percentage = virtual_memory.percent
+                # print(f"Current memory usage: {used_memory_percentage}%")
                 nxt_view = Blackboard()
                 self.window.show_view(nxt_view)
             # default, should not happend
@@ -1594,6 +1718,7 @@ class Table(arcade.View):
         super().__init__()
         self.scene = arcade.Scene()
         self.direction = [False, True, False, False]  # 紀錄前後左右是否可以到達別的場景
+        self.sprite_list = arcade.SpriteList()
         
         # record item's data
         self.item_list = []     # a list to store the data of the items in the scene
@@ -1611,6 +1736,7 @@ class Table(arcade.View):
         bg.center_x = 560
         bg.center_y = 325
         self.scene.add_sprite("Background", bg)
+        self.sprite_list.append(bg)
 
         # control
         arrow_down = arcade.Sprite("img/control/arrow_down.png", CONTROL_SCALING)
@@ -1618,6 +1744,7 @@ class Table(arcade.View):
         arrow_down.center_y = 30
         arrow_down.alpha = CONTROL_ALPHA
         self.scene.add_sprite("Control", arrow_down)
+        self.sprite_list.append(arrow_down)
 
         # items
         computer = arcade.Sprite("img/items/table_computer.jpg", 0.33)
@@ -1628,6 +1755,7 @@ class Table(arcade.View):
             "name": "oj_computer",
             "show big": False
         })
+        self.sprite_list.append(computer)
 
         name_list = arcade.Sprite("img/items/table_點名表.jpg", 0.23)
         name_list.position = (655, 250)
@@ -1637,6 +1765,7 @@ class Table(arcade.View):
             "name": "name_list",
             "show big": False
         })
+        self.sprite_list.append(name_list)
 
         if(display_items["drink"] == 2):
             drink = arcade.Sprite("img/items/table_打翻_密碼.jpg", 0.35)
@@ -1650,13 +1779,14 @@ class Table(arcade.View):
             "name": "drink",
             "show big": False
         })
+        self.sprite_list.append(drink)
 
         # backpack
         y = 550
         for i in range(len(backpack)):
             item = backpack[i]
             # should show in backpack, create its sprite
-            if(item["display"]):
+            if(item["display"] == 1):
                 sp = arcade.Sprite(item["path"], 0.08)
                 sp.position = (60, y)
                 y -= 90
@@ -1672,9 +1802,13 @@ class Table(arcade.View):
                     "name": item["name"],
                     "click": False
                 })
+                self.sprite_list.append(sp)
 
     def on_show(self):
         self.setup()
+        virtual_memory = psutil.virtual_memory()
+        used_memory_percentage = virtual_memory.percent
+        # print(f"in table, Current memory usage: {used_memory_percentage}%")
 
     def on_draw(self):
         arcade.start_render()
@@ -1701,9 +1835,9 @@ class Table(arcade.View):
         # backpack
         if(self.has_backpack):
             self.scene["Backpack"].draw()
-        if(backpack[0]["display"]):
+        if(backpack[0]["display"] == 1):
             self.scene["rag"].draw()
-        if(backpack[2]["display"]):
+        if(backpack[2]["display"] == 1):
             self.scene["charger"].draw()
 
         # debug
@@ -1756,7 +1890,7 @@ class Table(arcade.View):
             if(self.pre_action == "click charger"):
                 big = arcade.load_texture("img/items/table_computer_大oj.jpg")
                 display_items["oj_computer"] = 2
-                backpack[2]["display"] = False
+                backpack[2]["display"] = 2
             elif(display_items["oj_computer"] == 2):
                 big = arcade.load_texture("img/items/table_computer_大oj.jpg")
             else:
@@ -1781,7 +1915,7 @@ class Table(arcade.View):
             if(self.pre_action == "click rag"):
                 big = arcade.load_texture("img/items/table_打翻_大乾.jpg")
                 display_items["drink"] = 2
-                backpack[0]["display"] = False
+                backpack[0]["display"] = 2
             elif(display_items["drink"] == 2):
                 big = arcade.load_texture("img/items/table_打翻_大乾.jpg")
             else:
@@ -1797,6 +1931,14 @@ class Table(arcade.View):
         if(is_ctl != -1):
             # go back
             if(is_ctl == 1):
+                # release resources
+                for sp in self.sprite_list:
+                    del sp
+                arcade.cleanup_texture_cache()
+                gc.collect()
+                virtual_memory = psutil.virtual_memory()
+                used_memory_percentage = virtual_memory.percent
+                # print(f"Current memory usage: {used_memory_percentage}%")
                 nxt_view = Classroom()
                 self.window.show_view(nxt_view)
             # default, should not happend
