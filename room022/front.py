@@ -2,15 +2,15 @@ import arcade
 import sceneUtil
 import os
 
-class MainTheme(sceneUtil.Scenes):
+class Front(sceneUtil.Scenes):
     def __init__(self):
         super().__init__()
-        self.direction = ["DoorLeft", "DoorRight", "Front", "None"]
-        self.scene_name = "mainTheme"
+        self.direction = ["None", "None", "None", "MainTheme"]
+        self.scene_name = "front"
     
     def setBackground(self):
         current_path = os.path.dirname(os.path.abspath(__file__))
-        path = os.path.join(current_path, '..', "img/background/mainTheme.png")
+        path = os.path.join(current_path, '..', "img/background/front.png")
         background = arcade.Sprite(path, 1.02)
         background.center_x = 561
         background.center_y = 325
