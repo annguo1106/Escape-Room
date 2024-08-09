@@ -18,5 +18,7 @@ class Front(sceneUtil.Scenes):
         
     def setup(self):
         super().setup()
-        
-
+    
+    def on_draw(self):
+        super().on_draw()
+        arcade.finish_render()

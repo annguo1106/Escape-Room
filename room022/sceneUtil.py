@@ -8,6 +8,7 @@ class Scenes(arcade.View):
 	def __init__(self):
 		super().__init__()
 		self.scene = arcade.Scene()
+		self.code = arcade.Scene()
 		self.direction = []  # left, right, up, down
 		self.items = {}
 		self.backpack = []
@@ -41,8 +42,7 @@ class Scenes(arcade.View):
 		for item in item_list[self.scene_name]:
 			path = os.path.join(current_path, '..', item["pathSmall"])
 			sp = arcade.Sprite(path, item["scale"])
-			sp.center_x = item["x"]
-			sp.center_y = item["y"]
+			sp.set_position(item["x"], item["y"])
 			self.scene.add_sprite("Items", sp)
 			self.items[item["name"]] = {
 				"sprite": sp,
@@ -57,9 +57,7 @@ class Scenes(arcade.View):
 			if self.direction[i] != "None":
 				path = os.path.join(current_path, '..', control_list[i]["path"])
 				sp = arcade.Sprite(path, 0.8)
-				# sp.alpha = 140
-				sp.center_x = control_list[i]["x"]
-				sp.center_y = control_list[i]["y"]
+				sp.set_position(control_list[i]["x"], control_list[i]["y"])
 				self.scene.add_sprite("Control", sp)
 				
 		# scene name, direction and control in child
@@ -80,9 +78,8 @@ class Scenes(arcade.View):
 		
 		# draw items
 		self.scene.draw()
-		# self.scene["Control"].draw()
 
-		arcade.finish_render()
+		# arcade.finish_render()
 	
 	def on_mouse_press(self, x: int, y: int, button: int, modifires: int):
 		click = False

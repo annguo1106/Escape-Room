@@ -16,6 +16,10 @@ class DoorRight(sceneUtil.Scenes):
         background.center_x = 561
         background.center_y = 325
         self.scene.add_sprite("Background", background)
+        
+    def on_draw(self):
+        super().on_draw()
+        arcade.finish_render()
     
     def on_mouse_press(self, x: int, y: int, button: int, modifires: int):
         super().on_mouse_press(x, y, button, modifires)

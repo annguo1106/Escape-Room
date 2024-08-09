@@ -7,8 +7,8 @@ item_list = {
         "name": "vase",
         "sprite": None,
         "state": 1,
-        "pathSmall": "img/items/vaseSmall.png",
-        "pathShow": "img/items/vaseShow.png",
+        "pathSmall": "img/items/doorRight/vaseSmall.png",
+        "pathShow": "img/items/doorRight/vaseShow.png",
         "scale": 0.05,
         "place": "doorRight",
         "x": 185,
@@ -18,8 +18,8 @@ item_list = {
         "name": "professorYen",
         "sprite": None,
         "state": 1,
-        "pathSmall": "img/items/professorYenSmall.png",
-        "pathShow": "img/items/professorYenShow.jpg",
+        "pathSmall": "img/items/doorRight/professorYenSmall.png",
+        "pathShow": "img/items/doorRight/professorYenShow.jpg",
         "scale": 0.2,
         "place": "doorRight",
         "x": 286,
@@ -29,9 +29,9 @@ item_list = {
         {
         "name": "box",
         "sprite": None,
-        "state": 1,  # 1: small, 2: decoding, 3: finished decoding
-        "pathSmall": "img/items/boxSmall.png",
-        "pathShow": "img/items/boxShow.png",
+        "state": 0,  # 0: small, 1: decoding, 2: finished decoding
+        "pathSmall": "img/items/doorLeft/boxSmall.png",
+        "pathShow": "img/items/doorLeft/boxShow.jpg",
         "scale": 0.1,
         "place": "doorLeft",
         "x": 250,
@@ -39,6 +39,17 @@ item_list = {
         }
     ],
     "back": [
+        {
+        "name": "bookShell",
+        "sprite": None,
+        "state": 0,  # 0: small, 1: decoding, 2: finished decoding
+        "pathSmall": "img/items/back/bookShellSmall.png",
+        "pathShow": "img/items/back/bookShellShow.png",
+        "scale": 1.02,
+        "place": "doorLeft",
+        "x": 565,
+        "y": 350
+        }
     ],
     "front": [
     ]
@@ -80,3 +91,43 @@ control_list = [
         "y": 30
     }    
 ]
+
+code_list = {
+    "bookCode": [
+        {
+            "name": "book1",
+            "path": "img/items/back/book1.png",
+            "sp": None,
+            "x": 250,
+            "y": 250
+        },
+        {
+            "name": "book2",
+            "path": "img/items/back/book2.png",
+            "sp": None,
+            "x": 250,
+            "y": 250
+        },
+        {
+            "name": "book3",
+            "path": "img/items/back/book3.png",
+            "sp": None,
+            "x": 250,
+            "y": 250
+        },
+        {
+            "name": "book4",
+            "path": "img/items/back/book4.png",
+            "sp": None,
+            "x": 250,
+            "y": 250
+        },
+        {
+            "name": "book5",
+            "path": "img/items/back/book5.png",
+            "sp": None,
+            "x": 250,
+            "y": 250
+        },
+    ],
+}
