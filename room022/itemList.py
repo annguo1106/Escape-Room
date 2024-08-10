@@ -6,10 +6,12 @@ item_list = {
         {
         "name": "vase",
         "sprite": None,
-        "state": 1,
+        "state": 0, # 0: small, 1: break, 2: solved
         "display": True,
         "pathSmall": "img/items/doorRight/vaseSmall.png",
         "pathShow": "img/items/doorRight/vaseShow.png",
+        "pathRes": "img/items/doorRight/vaseShow.png",
+        "pathEnd": "img/items/doorRight/vaseShow.png",
         "scale": 0.2,
         "place": "doorRight",
         "x": 185,
@@ -63,17 +65,17 @@ item_list = {
 
 backpack_list = [
     {
-        "name": "key",
+        "name": "key",  # need to be changed into flashlight
         "sprite": None,
         "state": 0,
-        "scale": 0.5,
+        "scale": 0.3,
         "display": False,
         "path": "img/items/key.png"
     },
     {
         "name": "hammer",
         "sprite": None,
-        "state": 0,  # 0: not used, 1: used
+        "state": 0,  # 0: not used, 1: used CURRENTLY NO USE
         "scale": 0.18,
         "display": False,
         "path": "img/items/doorLeft/hammer.png"

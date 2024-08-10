@@ -77,7 +77,6 @@ class DoorLeft(sceneUtil.Scenes):
             #     else:
             #         print("worng password, try again")
             elif item_list["doorLeft"][0]["state"] == 2: # click on hammer -> in to backpack
-                print("click on hammer")
                 # item_list["doorLeft"][0]["display"] = False
                 item_list["doorLeft"][0]["state"] = 3
                 # path = os.path.join(self.current_path, '..', item_list["doorLeft"][0]["pathSmall"])
@@ -86,8 +85,9 @@ class DoorLeft(sceneUtil.Scenes):
                 # box.position = (item_list["doorLeft"][0]["x"], item_list["doorLeft"][0]["y"])
                 box.remove_from_sprite_lists()
                 backpack_list[1]["display"] = True
-                self.pre_action = None
                 self.set_backpack()
+                self.pre_action = None
+                
             
             elif item_list["doorLeft"][0]["state"] == 3:
                 print("load result")
@@ -105,4 +105,12 @@ class DoorLeft(sceneUtil.Scenes):
             box.scale = item_list["doorLeft"][0]["scale"]
             box.position = (item_list["doorLeft"][0]["x"], item_list["doorLeft"][0]["y"])
             self.pre_action = None
+            
+        # at the click event end
+        for item in self.backpack:    
+            sp = item["sprite"]
+            if(self.pre_action == ("click " + item["name"]) and not sp.collides_with_point((x, y))):
+                sp.scale = item["scale"]
+                self.pre_action = None
+ 
         

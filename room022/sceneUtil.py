@@ -15,16 +15,18 @@ class Scenes(arcade.View):
 		self.pre_action = None
 		self.scene_name = None
 		self.current_path = os.path.dirname(os.path.abspath(__file__))
-    
+		self.hand_item = None
 		# self.has_backpack = False
 	
 	def setBackground(self):
 		pass
 	
 	def set_backpack(self):
+		self.backpack.clear()
 		y = 550
 		for item in backpack_list:
 			if(item["display"]):
+				print("item name", item["name"])
 				path = os.path.join(self.current_path, '..', item["path"])
 				sp = arcade.Sprite(path, item["scale"])
 				sp.position = (60, y)
@@ -82,20 +84,20 @@ class Scenes(arcade.View):
 		self.scene.draw()
 
 		# arcade.finish_render()
-	
+ 
 	def on_mouse_press(self, x: int, y: int, button: int, modifires: int):
 		click = False
   		# click items in backpack
-		for item in self.backpack:
-			sp = item["sprite"]
-			if(self.pre_action == ("click " + item["name"]) and not sp.collides_with_point((x, y))):
-				sp.scale = item["scale"]
-				self.pre_action = None
-			elif(sp.collides_with_point((x, y))):
-				if(self.pre_action and self.pre_action.startwith("click")):
-					for j in range(len(self.backpack)):
-						if(("click " + self.backpack[j]["name"]) == self.pre_action):
-							self.backpack[j]["sprite"].scale = item["scale"]
-							break
-				sp.scale = item["scale"] * 1.2
-				self.pre_action = "click " + item["name"]
+		if x >= 0 and x <= 60:
+			for item in self.backpack:
+				sp = item["sprite"]
+				if(sp.collides_with_point((x, y))):
+					self.hand_item = item
+					print("preaction:", self.pre_action)
+					if(self.pre_action and self.pre_action.startwith("click")):
+						for j in range(len(self.backpack)):
+							if(("click " + self.backpack[j]["name"]) == self.pre_action):
+								self.backpack[j]["sprite"].scale = item["scale"]
+								break
+					sp.scale = item["scale"] * 1.2
+					self.pre_action = "click " + item["name"]
