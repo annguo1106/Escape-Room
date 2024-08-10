@@ -2,7 +2,7 @@ import arcade
 import arcade.gui
 import sceneUtil
 import os
-from itemList import item_list
+from itemList import item_list, backpack_list
 from inputUtil import FInputBox
 
 class DoorLeft(sceneUtil.Scenes):
@@ -12,8 +12,7 @@ class DoorLeft(sceneUtil.Scenes):
         self.scene_name = "doorLeft"
         self.code = arcade.Scene()
         self.input_box = None
-        self.current_path = os.path.dirname(os.path.abspath(__file__))
-    
+        
     def setBackground(self):
         path = os.path.join(self.current_path, '..', "img/background/doorLeft.png")
         background = arcade.Sprite(path, 1.02)
@@ -44,15 +43,12 @@ class DoorLeft(sceneUtil.Scenes):
                 item_list["doorLeft"][0]["state"] = 2
                 print("right answer")
                 box = self.items["box"]["sprite"]
-                path = os.path.join(self.current_path, '..', item_list["doorLeft"][0]["pathSmall"])
+                path = os.path.join(self.current_path, '..', item_list["doorLeft"][0]["pathRes"])
                 box.texture = arcade.load_texture(path)
-                box.scale = item_list["doorLeft"][0]["scale"]
-                box.position = (item_list["doorLeft"][0]["x"], item_list["doorLeft"][0]["y"])
+                box.scale = 0.2
+                box.position = (550, 325)
+                # box.position = (item_list["doorLeft"][0]["x"], item_list["doorLeft"][0]["y"])
                 self.pre_action = None
-        
-
-            else:
-                print("worng password, try again")
     
                 
     def on_mouse_press(self, x: int, y: int, button: int, modifires: int):
@@ -80,7 +76,28 @@ class DoorLeft(sceneUtil.Scenes):
             #         print("right answer")
             #     else:
             #         print("worng password, try again")
+            elif item_list["doorLeft"][0]["state"] == 2: # click on hammer -> in to backpack
+                print("click on hammer")
+                # item_list["doorLeft"][0]["display"] = False
+                item_list["doorLeft"][0]["state"] = 3
+                # path = os.path.join(self.current_path, '..', item_list["doorLeft"][0]["pathSmall"])
+                # box.texture = arcade.load_texture(path)
+                # box.scale = item_list["doorLeft"][0]["scale"]
+                # box.position = (item_list["doorLeft"][0]["x"], item_list["doorLeft"][0]["y"])
+                box.remove_from_sprite_lists()
+                backpack_list[1]["display"] = True
+                self.pre_action = None
+                self.set_backpack()
             
+            elif item_list["doorLeft"][0]["state"] == 3:
+                print("load result")
+                path = os.path.join(self.current_path, '..', item_list["doorLeft"][0]["pathShow"])
+                box.texture = arcade.load_texture(path)
+                box.scale = 0.4
+                box.position = (550, 325)
+                self.pre_action = "click box"
+                
+                
         # exist box
         elif(self.pre_action == "click box" and (x <= 193 or x >= 907 or y <= 191 or y >= 459)):
             path = os.path.join(self.current_path, '..', item_list["doorLeft"][0]["pathSmall"])

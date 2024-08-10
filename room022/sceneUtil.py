@@ -14,48 +14,50 @@ class Scenes(arcade.View):
 		self.backpack = []
 		self.pre_action = None
 		self.scene_name = None
+		self.current_path = os.path.dirname(os.path.abspath(__file__))
+    
 		# self.has_backpack = False
 	
 	def setBackground(self):
 		pass
-
-	def setup(self):
-		# backpack
+	
+	def set_backpack(self):
 		y = 550
 		for item in backpack_list:
-			if(item["state"] == 1):
-				sp = arcade.Sprite(item["path"], item["scale"])
+			if(item["display"]):
+				path = os.path.join(self.current_path, '..', item["path"])
+				sp = arcade.Sprite(path, item["scale"])
 				sp.position = (60, y)
 				y -= 90
 				self.scene.add_sprite("Backpack", sp)
 				self.backpack.append({
 					"sprite": sp,
 					"name": item["name"],
+					"scale": item["scale"],
 					"click": False
 				})
+    
+	def setup(self):
+		# backpack
+		self.set_backpack()
 		
 		# items
-		current_path = os.path.dirname(os.path.abspath(__file__))
-		# print("current_path:", current_path)
-		# print("sceneUtil -> item_list ")
-		# print(item_list[self.scene_name])
 		for item in item_list[self.scene_name]:
-			path = os.path.join(current_path, '..', item["pathSmall"])
-			sp = arcade.Sprite(path, item["scale"])
-			sp.set_position(item["x"], item["y"])
-			self.scene.add_sprite("Items", sp)
-			self.items[item["name"]] = {
-				"sprite": sp,
-				"name": item["name"],
-				"show_big": False
-			}
+			if item["display"]:
+				path = os.path.join(self.current_path, '..', item["pathSmall"])
+				sp = arcade.Sprite(path, item["scale"])
+				sp.set_position(item["x"], item["y"])
+				self.scene.add_sprite("Items", sp)
+				self.items[item["name"]] = {
+					"sprite": sp,
+					"name": item["name"],
+				}
 		# control
-		current_path = os.path.dirname(os.path.abspath(__file__))
 		# print("check -> sceneUtil-setup", "self direction")
 		# print(self.direction)
 		for i in range(4):
 			if self.direction[i] != "None":
-				path = os.path.join(current_path, '..', control_list[i]["path"])
+				path = os.path.join(self.current_path, '..', control_list[i]["path"])
 				sp = arcade.Sprite(path, 0.8)
 				sp.set_position(control_list[i]["x"], control_list[i]["y"])
 				self.scene.add_sprite("Control", sp)
@@ -84,17 +86,16 @@ class Scenes(arcade.View):
 	def on_mouse_press(self, x: int, y: int, button: int, modifires: int):
 		click = False
   		# click items in backpack
-		if x >= 60 and x <= 320 and y >= 100 and y <= 650:
-			for item in self.backpack:
-				sp = item["sprite"]
-				if(self.pre_action == "click " + item["name"] and not sp.collides_with_ppint((x, y))):
-					sp.scale = 0.08
-					self.pre_action = None
-				elif(item.collides_with_point((x, y))):
-					if(self.pre_action and self.pre_action.startwith("click")):
-						for j in range(len(self.backpack)):
-							if("click " + self.backpack[j]["name"] == self.pre_action):
-								self.backpack[j]["sprite"].scale = 0.08
-								break
-					sp.scale = 0.1
-					self.pre_action = "click " + item["name"]
+		for item in self.backpack:
+			sp = item["sprite"]
+			if(self.pre_action == ("click " + item["name"]) and not sp.collides_with_point((x, y))):
+				sp.scale = item["scale"]
+				self.pre_action = None
+			elif(sp.collides_with_point((x, y))):
+				if(self.pre_action and self.pre_action.startwith("click")):
+					for j in range(len(self.backpack)):
+						if(("click " + self.backpack[j]["name"]) == self.pre_action):
+							self.backpack[j]["sprite"].scale = item["scale"]
+							break
+				sp.scale = item["scale"] * 1.2
+				self.pre_action = "click " + item["name"]

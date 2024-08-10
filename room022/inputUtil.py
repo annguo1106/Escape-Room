@@ -23,13 +23,14 @@ class FInputBox(arcade.View):
         # Draw the input text
         for i, char in enumerate(self.input_text):
             arcade.draw_text(char, start_x + i * 30, y + 5, arcade.color.BLACK, 24)
-
         # Draw the cursor
         if len(self.input_text) < self.max_length:
-            arcade.draw_text("|", start_x + self.cursor_position * 30, y + 5, arcade.color.RED, 24)
+            arcade.draw_text("|", start_x + self.cursor_position * 30, y + 5, arcade.color.GRAY, 24)
             
     def on_key_press(self, key, modifiers: int):
         super().on_key_press(key, modifiers)
+        if self.input_text == "WRONG":
+            self.input_text = ""
         if key == arcade.key.BACKSPACE and self.input_text:
             self.input_text = self.input_text[:-1]
             self.cursor_position = max(self.cursor_position - 1, 0)
@@ -45,7 +46,6 @@ class FInputBox(arcade.View):
                 self.result = True
             else:
                 self.result = False
-                self.input_text = ""
+                self.input_text = "WRONG"
                 self.cursor_position = 0
-            print("result:", self.result)
             

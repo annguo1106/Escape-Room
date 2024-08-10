@@ -11,8 +11,7 @@ class Back(sceneUtil.Scenes):
         self.books = []
         
     def setBackground(self):
-        current_path = os.path.dirname(os.path.abspath(__file__))
-        path = os.path.join(current_path, '..', "img/background/back.png")
+        path = os.path.join(self.current_path, '..', "img/background/back.png")
         background = arcade.Sprite(path, 1.02)
         background.center_x = 561
         background.center_y = 325
@@ -20,13 +19,11 @@ class Back(sceneUtil.Scenes):
         
     def setup(self):
         super().setup()
-        
-        current_path = os.path.dirname(os.path.abspath(__file__))
 
         # code
         for book in code_list["bookCode"]:
             # print("setting book code")
-            path = os.path.join(current_path, '..', book["path"])
+            path = os.path.join(self.current_path, '..', book["path"])
             sp = arcade.Sprite(path, 0.5)
             sp.set_position(book["x"], book["y"])
             self.code.add_sprite("book", sp)
@@ -44,7 +41,6 @@ class Back(sceneUtil.Scenes):
         super().on_mouse_press(x, y, button, modifires)
         
         # init
-        current_path = os.path.dirname(os.path.abspath(__file__))
         bookShell = self.items["bookShell"]["sprite"]
         
         # click on shell
@@ -61,7 +57,7 @@ class Back(sceneUtil.Scenes):
             
             # decoded
             elif item_list["back"][0]["state"] == 2:
-                path = os.path.join(current_path, '..', "img/items/back/bookShellFin.png")
+                path = os.path.join(self.current_path, '..', "img/items/back/bookShellFin.png")
                 bookShell.texture = arcade.load_texture(path)
                 bookShell.scale = 0.5
                 bookShell.position = (565, 350)

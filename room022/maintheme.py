@@ -9,8 +9,7 @@ class MainTheme(sceneUtil.Scenes):
         self.scene_name = "mainTheme"
     
     def setBackground(self):
-        current_path = os.path.dirname(os.path.abspath(__file__))
-        path = os.path.join(current_path, '..', "img/background/mainTheme.png")
+        path = os.path.join(self.current_path, '..', "img/background/mainTheme.png")
         background = arcade.Sprite(path, 1.02)
         background.center_x = 561
         background.center_y = 325
