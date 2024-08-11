@@ -26,18 +26,19 @@ class DoorRight(sceneUtil.Scenes):
         # init
         professorYen = self.items["professorYen"]["sprite"]
         vase = self.items["vase"]["sprite"]
+        
         # click on professorYen
-        # print("in doorRight -> check professor sprite", professorYen["name"])
         if(professorYen.collides_with_point((x, y))):
-            # print("preaction:", self.pre_action)
             if item_list["doorRight"][1]["state"] == 0:
+                # use flashlight
                 if self.pre_action == "click flashlight":
                     path = os.path.join(self.current_path, '..', item_list["doorRight"][1]["pathEnd"])
                     item_list["doorRight"][1]["state"] = 1
                     backpack_list[0]["display"] = False # flashlight used
-                    self.scene.get_sprite_list("Backpack").clear()
                     self.hand_item = None
+                    self.scene.get_sprite_list("Backpack").clear()
                     self.set_backpack()
+                # didn't use flashlight
                 else:
                     path = os.path.join(self.current_path, '..', item_list["doorRight"][1]["pathShow"])
             else:

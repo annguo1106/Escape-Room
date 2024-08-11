@@ -20,10 +20,10 @@ item_list = {
         "display": True,
         "pathSmall": "img/items/mainTheme/ragSmall.png",
         # "pathShow": "img/items/mainTheme/ragShow.png",
-        "scale": 0.05,
+        "scale": 0.09,
         "place": "mainTheme",
-        "x": 250,
-        "y": 350
+        "x": 664,
+        "y": 256
         },
     ],
     "doorRight": [
@@ -68,6 +68,20 @@ item_list = {
         "place": "doorLeft",
         "x": 250,
         "y": 200
+        },
+        {
+        "name": "poster",
+        "sprite": None,
+        "state": 0,  # not used
+        "display": True,
+        "pathSmall": "img/items/doorLeft/posterSmall.jpg",
+        "pathShow": "img/items/doorLeft/safeShow.jpg",
+        "pathRes": "img/items/doorLeft/safeRes.jpg",
+        "pathEnd": "img/items/doorLeft/safeEnd.jpg",
+        "scale": 0.25,
+        "place": "doorLeft",
+        "x": 376,
+        "y": 450
         }
     ],
     "back": [
@@ -105,7 +119,15 @@ backpack_list = [
         "scale": 0.18,
         "display": False,
         "path": "img/items/doorLeft/hammer.png"
-    }
+    },
+    {
+        "name": "rag",
+        "sprite": None,
+        "state": 0,
+        "scale": 0.11,
+        "display": False,
+        "path": "img/items/mainTheme/ragSmall.png"
+        },
 ]
 
 control_list = [
