@@ -26,7 +26,7 @@ class Scenes(arcade.View):
 		y = 550
 		for item in backpack_list:
 			if(item["display"]):
-				print("item name", item["name"])
+				# print("item name", item["name"])
 				path = os.path.join(self.current_path, '..', item["path"])
 				sp = arcade.Sprite(path, item["scale"])
 				sp.position = (60, y)
@@ -88,16 +88,18 @@ class Scenes(arcade.View):
 	def on_mouse_press(self, x: int, y: int, button: int, modifires: int):
 		click = False
   		# click items in backpack
-		if x >= 0 and x <= 60:
+		if x >= 0 and x <= 120:
+			# print("in backpack:")
 			for item in self.backpack:
 				sp = item["sprite"]
+				# print(item["name"])
 				if(sp.collides_with_point((x, y))):
+					# print("click ", item["name"])
 					self.hand_item = item
-					print("preaction:", self.pre_action)
-					if(self.pre_action and self.pre_action.startwith("click")):
+					if(self.pre_action and self.pre_action.startswith("click")):
 						for j in range(len(self.backpack)):
 							if(("click " + self.backpack[j]["name"]) == self.pre_action):
-								self.backpack[j]["sprite"].scale = item["scale"]
+								self.backpack[j]["sprite"].scale = self.backpack[j]["scale"]
 								break
 					sp.scale = item["scale"] * 1.2
 					self.pre_action = "click " + item["name"]

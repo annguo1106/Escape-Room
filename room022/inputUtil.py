@@ -41,7 +41,7 @@ class FInputBox(arcade.View):
                 self.input_text += chr(key)
             self.cursor_position = len(self.input_text)
         if len(self.input_text) == self.max_length:
-            print("check ans")
+            # print("check ans")
             if self.input_text == self.ans:
                 self.result = True
             else:

@@ -19,16 +19,14 @@ class DoorLeft(sceneUtil.Scenes):
         background.center_x = 561
         background.center_y = 325
         self.scene.add_sprite("Background", background)
-    
+
     def setup(self):
         super().setup()
-        
-        # box decoding -> letter code (user input)
-        # init user input box
-        self.input_box = FInputBox(325, 5, "CODEE")
+        self.input_box = FInputBox(325, 5, "MGANS")
     
     def on_draw(self):
         super().on_draw()
+        
         if item_list["doorLeft"][0]["state"] == 1:
             self.input_box.on_draw()
             
@@ -41,7 +39,7 @@ class DoorLeft(sceneUtil.Scenes):
             self.input_box.on_key_press(key, modifiers)
             if self.input_box.result:
                 item_list["doorLeft"][0]["state"] = 2
-                print("right answer")
+                # print("right answer")
                 box = self.items["box"]["sprite"]
                 path = os.path.join(self.current_path, '..', item_list["doorLeft"][0]["pathRes"])
                 box.texture = arcade.load_texture(path)
@@ -68,6 +66,7 @@ class DoorLeft(sceneUtil.Scenes):
                 box.position = (550, 325)
                 self.pre_action = "click box"
                 item_list["doorLeft"][0]["state"] = 1
+
             
             # decoding
             # elif item_list["doorLeft"][0]["state"] == 1:
@@ -90,7 +89,7 @@ class DoorLeft(sceneUtil.Scenes):
                 
             
             elif item_list["doorLeft"][0]["state"] == 3:
-                print("load result")
+                # print("load result")
                 path = os.path.join(self.current_path, '..', item_list["doorLeft"][0]["pathShow"])
                 box.texture = arcade.load_texture(path)
                 box.scale = 0.4
@@ -105,6 +104,9 @@ class DoorLeft(sceneUtil.Scenes):
             box.scale = item_list["doorLeft"][0]["scale"]
             box.position = (item_list["doorLeft"][0]["x"], item_list["doorLeft"][0]["y"])
             self.pre_action = None
+            if item_list["doorLeft"][0]["state"] != 2:
+                item_list["doorLeft"][0]["state"] = 0
+            
             
         # at the click event end
         for item in self.backpack:    

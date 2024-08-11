@@ -1,6 +1,30 @@
 # states: 0: not display, 1: display, 2: used
 item_list = {
     "mainTheme": [
+        {
+        "name": "drawer",
+        "sprite": None,
+        "state": 0, # 0: small, 1: solved
+        "display": False,
+        "pathShow": "img/items/mainTheme/drawerShow.png",
+        "pathEnd": "img/items/mainTheme/drawerEnd.png",
+        "scale": 0.8,
+        "place": "mainTheme",
+        "x": 550,
+        "y": 350
+        },
+        {
+        "name": "rag",
+        "sprite": None,
+        "state": 0,
+        "display": True,
+        "pathSmall": "img/items/mainTheme/ragSmall.png",
+        # "pathShow": "img/items/mainTheme/ragShow.png",
+        "scale": 0.05,
+        "place": "mainTheme",
+        "x": 250,
+        "y": 350
+        },
     ],
     "doorRight": [
         {
@@ -10,8 +34,8 @@ item_list = {
         "display": True,
         "pathSmall": "img/items/doorRight/vaseSmall.png",
         "pathShow": "img/items/doorRight/vaseShow.png",
-        "pathRes": "img/items/doorRight/vaseShow.png",
-        "pathEnd": "img/items/doorRight/vaseShow.png",
+        "pathRes": "img/items/doorRight/vaseRes.png",
+        "pathEnd": "img/items/doorRight/vaseEnd.png",
         "scale": 0.2,
         "place": "doorRight",
         "x": 185,
@@ -20,10 +44,11 @@ item_list = {
         {
         "name": "professorYen",
         "sprite": None,
-        "state": 1,
+        "state": 0,  # 0: small, 1: solved
         "display": True,
         "pathSmall": "img/items/doorRight/professorYenSmall.png",
         "pathShow": "img/items/doorRight/professorYenShow.jpg",
+        "pathEnd": "img/items/doorRight/professorYenEnd.png",
         "scale": 0.2,
         "place": "doorRight",
         "x": 286,
@@ -47,16 +72,17 @@ item_list = {
     ],
     "back": [
         {
-        "name": "bookShell",
+        "name": "shell",
         "sprite": None,
         "state": 0,  # 0: small, 1: decoding, 2: finished decoding
         "display": True,
-        "pathSmall": "img/items/back/bookShellSmall.png",
-        "pathShow": "img/items/back/bookShellShow.png",
-        "scale": 1.02,
+        "pathSmall": "img/items/back/shellSmall.png",
+        "pathShow": "img/items/back/shellShow.png",
+        "pathEnd": "img/items/back/shellEnd.png",
+        "scale": 0.4,
         "place": "doorLeft",
-        "x": 565,
-        "y": 350
+        "x": 330,
+        "y": 325
         }
     ],
     "front": [
@@ -65,12 +91,12 @@ item_list = {
 
 backpack_list = [
     {
-        "name": "key",  # need to be changed into flashlight
+        "name": "flashlight",  # need to be changed into flashlight
         "sprite": None,
         "state": 0,
         "scale": 0.3,
         "display": False,
-        "path": "img/items/key.png"
+        "path": "img/items/doorRight/flashlight.png"
     },
     {
         "name": "hammer",
@@ -115,36 +141,31 @@ code_list = {
             "name": "book1",
             "path": "img/items/back/book1.png",
             "sp": None,
-            "x": 250,
-            "y": 250
+            "scale": 0.8
         },
         {
             "name": "book2",
             "path": "img/items/back/book2.png",
             "sp": None,
-            "x": 250,
-            "y": 250
+            "scale": 0.8
         },
         {
             "name": "book3",
             "path": "img/items/back/book3.png",
             "sp": None,
-            "x": 250,
-            "y": 250
+            "scale": 0.8
         },
         {
             "name": "book4",
             "path": "img/items/back/book4.png",
             "sp": None,
-            "x": 250,
-            "y": 250
+            "scale": 0.8
         },
         {
             "name": "book5",
             "path": "img/items/back/book5.png",
             "sp": None,
-            "x": 250,
-            "y": 250
+            "scale": 0.8
         },
     ],
 }

@@ -10,7 +10,7 @@ class DoorRight(sceneUtil.Scenes):
         self.scene_name = "doorRight"
         
     def setBackground(self):
-        path = os.path.join(self.current_path, '..', "img/background/doorRight.png")
+        path = os.path.join(self.current_path, '..', "img/background/doorRight.jpg")
         background = arcade.Sprite(path, 1.02)
         background.center_x = 561
         background.center_y = 325
@@ -29,11 +29,24 @@ class DoorRight(sceneUtil.Scenes):
         # click on professorYen
         # print("in doorRight -> check professor sprite", professorYen["name"])
         if(professorYen.collides_with_point((x, y))):
-            path = os.path.join(self.current_path, '..', item_list["doorRight"][1]["pathShow"])
+            # print("preaction:", self.pre_action)
+            if item_list["doorRight"][1]["state"] == 0:
+                if self.pre_action == "click flashlight":
+                    path = os.path.join(self.current_path, '..', item_list["doorRight"][1]["pathEnd"])
+                    item_list["doorRight"][1]["state"] = 1
+                    backpack_list[0]["display"] = False # flashlight used
+                    self.scene.get_sprite_list("Backpack").clear()
+                    self.hand_item = None
+                    self.set_backpack()
+                else:
+                    path = os.path.join(self.current_path, '..', item_list["doorRight"][1]["pathShow"])
+            else:
+                path = os.path.join(self.current_path, '..', item_list["doorRight"][1]["pathEnd"])
             professorYen.texture = arcade.load_texture(path)
             professorYen.scale = 0.5
             professorYen.position = (550, 325)
             self.pre_action = "click professorYen"
+            
         # exist professor Yen
         elif(self.pre_action == "click professorYen" and not professorYen.collides_with_point((x, y))):
             path = os.path.join(self.current_path, '..', item_list["doorRight"][1]["pathSmall"])
@@ -41,8 +54,10 @@ class DoorRight(sceneUtil.Scenes):
             professorYen.scale = item_list["doorRight"][1]["scale"]
             professorYen.position = (item_list["doorRight"][1]["x"], item_list["doorRight"][1]["y"])
             self.pre_action = None
+            
         # click on vase
         elif(vase.collides_with_point((x, y))):
+            # print("state:", item_list["doorRight"][0]["state"])
             if item_list["doorRight"][0]["state"] == 0:
                 if self.pre_action == "click hammer":
                     path = os.path.join(self.current_path, '..', item_list["doorRight"][0]["pathRes"])
@@ -53,9 +68,7 @@ class DoorRight(sceneUtil.Scenes):
                     backpack_list[1]["display"] = False # hammer used
                     self.scene.get_sprite_list("Backpack").clear()
                     self.hand_item = None
-                    print("self hand", self.hand_item)
                     self.set_backpack()
-                    print("hammer used")
                     self.pre_action = None
                 else:
                     path = os.path.join(self.current_path, '..', item_list["doorRight"][0]["pathShow"])
@@ -76,9 +89,7 @@ class DoorRight(sceneUtil.Scenes):
                 vase.texture = arcade.load_texture(path)
                 vase.scale = item_list["doorRight"][0]["scale"] * 1.2
                 vase.position = (550, 325)
-                item_list["doorRight"][0]["state"] = 1
                 self.pre_action = "click vase"
-                print("this vase is solved")
         
         # exist vase
         elif(self.pre_action == "click vase" and not vase.collides_with_point((x, y))):
@@ -90,7 +101,7 @@ class DoorRight(sceneUtil.Scenes):
         
         # at the click event end
         if self.hand_item:
-            print("hand item:", self.hand_item["name"])
+            # print("hand item:", self.hand_item["name"])
             if(self.hand_item["sprite"].scale != self.hand_item["scale"] and not self.hand_item["sprite"].collides_with_point((x, y))):
                 self.hand_item["sprite"].scale = self.hand_item["scale"]
                 if(self.pre_action == ("click " + self.hand_item["name"])):
