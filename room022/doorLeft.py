@@ -12,6 +12,7 @@ class DoorLeft(sceneUtil.Scenes):
         self.scene_name = "doorLeft"
         self.code = arcade.Scene()
         self.input_box = None
+        self.input_safe = None
         
     def setBackground(self):
         path = os.path.join(self.current_path, '..', "img/background/doorLeft.png")
@@ -22,13 +23,17 @@ class DoorLeft(sceneUtil.Scenes):
 
     def setup(self):
         super().setup()
-        self.input_box = FInputBox(325, 5, "MGANS")
+        self.input_box = FInputBox(277, 5, "MASGN")
+        self.input_safe = FInputBox(345, 6, "NYCUCS")
     
     def on_draw(self):
         super().on_draw()
         
         if item_list["doorLeft"][0]["state"] == 1:
             self.input_box.on_draw()
+        
+        if item_list["doorLeft"][1]["state"] == 2:
+            self.input_safe.on_draw()
             
         arcade.finish_render()
     
@@ -39,17 +44,22 @@ class DoorLeft(sceneUtil.Scenes):
             self.input_box.on_key_press(key, modifiers)
             if self.input_box.result:
                 item_list["doorLeft"][0]["state"] = 2
-                # print("right answer")
                 box = self.items["box"]["sprite"]
                 path = os.path.join(self.current_path, '..', item_list["doorLeft"][0]["pathRes"])
-                box.texture = arcade.load_texture(path)
-                box.scale = 0.2
-                box.position = (550, 325)
-                # box.position = (item_list["doorLeft"][0]["x"], item_list["doorLeft"][0]["y"])
+                self.load_sp(box, 1, 550, 325, path)
                 self.pre_action = None
+        elif item_list["doorLeft"][1]["state"] == 2:
+            self.input_safe.on_key_press(key, modifiers)
+            if self.input_safe.result:
+                item_list["doorLeft"][1]["state"] = 3
+                safe = self.items["poster"]["sprite"]
+                path = os.path.join(self.current_path, '..', item_list["doorLeft"][1]["pathIt"])
+                self.load_sp(safe, 1.1, 550, 325, path)
+                self.pre_action = "click poster"
     
                 
     def on_mouse_press(self, x: int, y: int, button: int, modifires: int):
+        print("pre_action:", self.pre_action)
         super().on_mouse_press(x, y, button, modifires)
         
         # init
@@ -59,11 +69,8 @@ class DoorLeft(sceneUtil.Scenes):
         # click on box
         if(box.collides_with_point((x, y))):
             # before decoding
-            if item_list["doorLeft"][0]["state"] == 0:    
-                path = os.path.join(self.current_path, '..', item_list["doorLeft"][0]["pathShow"])
-                box.texture = arcade.load_texture(path)
-                box.scale = 0.4
-                box.position = (550, 325)
+            if item_list["doorLeft"][0]["state"] == 0:
+                self.load_sp(box, item_list["doorLeft"][0]["scale"] * 2.4, 550, 325)
                 self.pre_action = "click box"
                 item_list["doorLeft"][0]["state"] = 1
             
@@ -77,31 +84,60 @@ class DoorLeft(sceneUtil.Scenes):
             
             # show solved box
             elif item_list["doorLeft"][0]["state"] == 3:
-                path = os.path.join(self.current_path, '..', item_list["doorLeft"][0]["pathShow"])
-                box.texture = arcade.load_texture(path)
-                box.scale = 0.4
-                box.position = (550, 325)
+                path = os.path.join(self.current_path, '..', item_list["doorLeft"][0]["pathEnd"])
+                self.load_sp(box, item_list["doorLeft"][0]["scale"] * 2.4, 550, 325, path)
                 self.pre_action = "click box" 
                 
         # exist box
         elif(self.pre_action == "click box" and (x <= 193 or x >= 907 or y <= 191 or y >= 459)):
             path = os.path.join(self.current_path, '..', item_list["doorLeft"][0]["pathSmall"])
-            box.texture = arcade.load_texture(path)
-            box.scale = item_list["doorLeft"][0]["scale"]
-            box.position = (item_list["doorLeft"][0]["x"], item_list["doorLeft"][0]["y"])
+            self.load_sp(box, item_list["doorLeft"][0]["scale"], item_list["doorLeft"][0]["x"], item_list["doorLeft"][0]["y"], path)
             self.pre_action = None
-            if item_list["doorLeft"][0]["state"] != 2:
+            if item_list["doorLeft"][0]["state"] == 1:
                 item_list["doorLeft"][0]["state"] = 0
         
         # click poster
         elif(poster.collides_with_point((x, y))):
-            pass
-
-        
-        
+            # remove poster
+            if item_list["doorLeft"][1]["state"] == 0:
+                path = os.path.join(self.current_path, '..', item_list["doorLeft"][1]["pathRes"])
+                self.load_sp(poster, 0.5, item_list["doorLeft"][1]["x"], item_list["doorLeft"][1]["y"], path)
+                item_list["doorLeft"][1]["pathSmall"] = item_list["doorLeft"][1]["pathRes"]
+                item_list["doorLeft"][1]["state"] = 1
+                self.pre_action = "click poster"
+            # safe decoding
+            elif item_list["doorLeft"][1]["state"] == 1:
+                path = os.path.join(self.current_path, '..', item_list["doorLeft"][1]["pathRes"])
+                self.load_sp(poster, 1.1, 550, 325, path)
+                item_list["doorLeft"][1]["state"] = 2
+                self.pre_action = "click poster"
+            # key reveal
+            elif item_list["doorLeft"][1]["state"] == 3:
+                item_list["doorLeft"][1]["state"] = 4
+                poster.remove_from_sprite_lists()
+                backpack_list[4]["display"] = True # receive key
+                self.set_backpack()
+                self.pre_action = None
+            # key took    
+            elif item_list["doorLeft"][1]["state"] == 4:
+                path = os.path.join(self.current_path, '..', item_list["doorLeft"][1]["pathEnd"])
+                self.load_sp(poster, 1.1, 550, 325, path)
+                self.pre_action = "click poster"
+        # exist poster
+        elif(self.pre_action == "click poster" and not poster.collides_with_point((x, y))):
+            print("exist safe")
+            path = os.path.join(self.current_path, '..', item_list["doorLeft"][1]["pathSmall"])
+            poster.texture = arcade.load_texture(path)
+            poster.hit_box = poster.texture.hit_box_points
+            poster.scale = item_list["doorLeft"][1]["scale"]
+            poster.position = (item_list["doorLeft"][1]["x"], item_list["doorLeft"][1]["y"])
+            self.pre_action = None
+            # decoding not finished
+            if item_list["doorLeft"][1]["state"] == 2:
+                item_list["doorLeft"][1]["state"] = 1
             
         # at the click event end
-        for item in self.backpack:    
+        for item in self.backpack:
             sp = item["sprite"]
             if(self.pre_action == ("click " + item["name"]) and not sp.collides_with_point((x, y))):
                 sp.scale = item["scale"]

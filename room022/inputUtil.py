@@ -37,7 +37,7 @@ class FInputBox(arcade.View):
         elif len(self.input_text) < self.max_length:
             if key in range(arcade.key.A, arcade.key.Z+1):
                 self.input_text += chr(key).upper()
-            elif key in range(arcade.key.KEY_0, arcade.key.Z + 1):
+            elif key in range(arcade.key.KEY_0, arcade.key.KEY_9 + 1):
                 self.input_text += chr(key)
             self.cursor_position = len(self.input_text)
         if len(self.input_text) == self.max_length:

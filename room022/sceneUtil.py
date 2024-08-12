@@ -20,6 +20,13 @@ class Scenes(arcade.View):
 	
 	def setBackground(self):
 		pass
+
+	def load_sp(self, sp, scale, x, y, path=None):
+		if path != None:
+			sp.texture = arcade.load_texture(path)
+		sp.scale = scale
+		sp.position = (x, y)
+		sp.hit_box = sp.texture.hit_box_points
 	
 	def set_backpack(self):
 		self.backpack.clear()

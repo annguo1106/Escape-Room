@@ -11,7 +11,7 @@ class MainTheme(sceneUtil.Scenes):
         self.drawer = None
         
     def setBackground(self):
-        path = os.path.join(self.current_path, '..', "img/background/mainTheme.jpg")
+        path = os.path.join(self.current_path, '..', "img/background/mainTheme.png")
         background = arcade.Sprite(path, 1.02)
         background.center_x = 561
         background.center_y = 325
@@ -61,6 +61,7 @@ class MainTheme(sceneUtil.Scenes):
                 self.drawer["sprite"].set_position(self.drawer["x"], self.drawer["y"])
                 self.scene.add_sprite("Items", self.drawer["sprite"])
             self.pre_action = "click drawer"
+            
         # exist drawer
         elif(self.pre_action == "click drawer" and (self.drawer != None and not self.drawer["sprite"].collides_with_point((x, y)))):
             self.drawer["sprite"].remove_from_sprite_lists()

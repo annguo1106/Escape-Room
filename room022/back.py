@@ -1,7 +1,7 @@
 import arcade
 import sceneUtil
 import os
-from itemList import item_list, code_list
+from itemList import item_list, code_list, backpack_list
 
 class Back(sceneUtil.Scenes):
     def __init__(self):
@@ -11,7 +11,7 @@ class Back(sceneUtil.Scenes):
         self.books = []
         self.book_place = [None, None, None, None, None]
         self.book_count = 0
-        self.book_ans = ["click book1", "click book3", "click book2", "click book4", "click book5"]
+        self.book_ans = ["click book3", "click book2", "click book5", "click book1", "click book4"]
         
     def setBackground(self):
         path = os.path.join(self.current_path, '..', "img/background/back.jpg")
@@ -49,10 +49,17 @@ class Back(sceneUtil.Scenes):
     def on_mouse_press(self, x: int, y: int, button: int, modifires: int):
         super().on_mouse_press(x, y, button, modifires)
         print("self.preaction", self.pre_action)
-        # init
-        shell = self.items["shell"]["sprite"]
-        
+        # click on lighter
+        if item_list["back"][1]["display"]:
+            lighter = self.items["lighter"]["sprite"]
+            if lighter.collides_with_point((x, y)):
+                lighter.remove_from_sprite_lists()
+                item_list["back"][1]["display"] = False
+                backpack_list[3]["display"] = True
+                self.set_backpack()
+                self.pre_action = None
         # click on shell
+        shell = self.items["shell"]["sprite"]
         if(shell.collides_with_point((x, y))):
             # before decoding
             if item_list["back"][0]["state"] == 0:

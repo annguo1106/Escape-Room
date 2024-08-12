@@ -36,7 +36,7 @@ item_list = {
         "pathShow": "img/items/doorRight/vaseShow.png",
         "pathRes": "img/items/doorRight/vaseRes.png",
         "pathEnd": "img/items/doorRight/vaseEnd.png",
-        "scale": 0.2,
+        "scale": 0.5,
         "place": "doorRight",
         "x": 185,
         "y": 170
@@ -47,12 +47,25 @@ item_list = {
         "state": 0,  # 0: small, 1: solved
         "display": True,
         "pathSmall": "img/items/doorRight/professorYenSmall.png",
-        "pathShow": "img/items/doorRight/professorYenShow.jpg",
         "pathEnd": "img/items/doorRight/professorYenEnd.png",
-        "scale": 0.2,
+        "scale": 0.8,
         "place": "doorRight",
         "x": 286,
-        "y": 352}
+        "y": 370
+        },
+        {
+        "name": "lock",
+        "sprite": None,
+        "state": 0,  # 0: small, 1: decoding, 2: decoded, 3: key used
+        "display": True,
+        "pathSmall": "img/items/doorRight/lockSmall.png",
+        "pathRes": "img/items/doorRight/lockRes.png",
+        "pathEnd": "img/items/doorRight/lockEnd.png",
+        "scale": 0.35,
+        "place": "doorRight",
+        "x": 660,
+        "y": 124
+        }
     ],
     "doorLeft": [
         {
@@ -61,26 +74,27 @@ item_list = {
         "state": 0,  # 0: small, 1: decoding, 2: finished decoding 3: get hammer
         "display": True,
         "pathSmall": "img/items/doorLeft/boxSmall.png",
-        "pathShow": "img/items/doorLeft/boxShow.jpg",
+        "pathShow": "img/items/doorLeft/boxShow.png",
         "pathRes": "img/items/doorLeft/hammer.png",
-        "pathEnd": "img/items/doorLeft/boxShow.png",
-        "scale": 0.1,
+        "pathEnd": "img/items/doorLeft/boxEnd.png",
+        "scale": 0.35,
         "place": "doorLeft",
-        "x": 250,
+        "x": 280,
         "y": 200
         },
         {
         "name": "poster",
         "sprite": None,
-        "state": 0,  # not used
+        "state": 0,  # 0: poster, 1: safe, 2: decoding, 3: rec key, 4: decoded
         "display": True,
-        "pathSmall": "img/items/doorLeft/posterSmall.jpg",
-        "pathShow": "img/items/doorLeft/safeShow.jpg",
-        "pathRes": "img/items/doorLeft/safeRes.jpg",
-        "pathEnd": "img/items/doorLeft/safeEnd.jpg",
-        "scale": 0.25,
+        "pathSmall": "img/items/doorLeft/posterSmall.jpg", #
+        "pathShow": "img/items/doorLeft/safeShow.png", # decoding
+        "pathRes": "img/items/doorLeft/safeRes.png", # safe under poster
+        "pathIt": "img/items/doorLeft/key.png", # key
+        "pathEnd": "img/items/doorLeft/safeEnd.png", # end
+        "scale": 0.2,
         "place": "doorLeft",
-        "x": 376,
+        "x": 260,
         "y": 450
         }
     ],
@@ -97,9 +111,73 @@ item_list = {
         "place": "doorLeft",
         "x": 330,
         "y": 325
+        },
+        {
+        "name": "lighter",
+        "sprite": None,
+        "state": 0,  # 0: small, 1: took
+        "display": True,
+        "pathSmall": "img/items/back/lighter.png",
+        "scale": 0.4,
+        "place": "back",
+        "x": 330,
+        "y": 325
         }
     ],
     "front": [
+        {
+        "name": "computer",
+        "sprite": None,
+        "state": 0,  # 0: small, 1: decoding, 2: finished decoding
+        "display": True,
+        "pathSmall": "img/items/front/computerSmall.png",
+        "pathShow": "img/items/front/computerShow.png",
+        "pathEnd": "img/items/front/computerEnd.png",
+        "scale": 0.4,
+        "place": "front",
+        "x": 820,
+        "y": 224
+        },
+        {
+        "name": "notebook",
+        "sprite": None,
+        "state": 0,  # 0: small, 1: decoding, 2: finished decoding, 3: code reveal
+        "display": True,
+        "pathSmall": "img/items/front/notebookSmall.png",
+        "pathRes": "img/items/front/notebookRes.png",
+        "pathEnd": "img/items/front/notebookEnd.png",
+        "scale": 0.5,
+        "place": "front",
+        "x": 206,
+        "y": 55
+        },
+        {
+        "name": "screen",
+        "sprite": None,
+        "state": 0,  # 0: small, 1: show
+        "display": True,
+        "pathSmall": "img/items/front/screenSmall.png",
+        "pathShow": "img/items/front/screenShow.png",
+        "pathEnd": "img/items/front/screenEnd.png",
+        "scale": 1,
+        "place": "front",
+        "x": 560,
+        "y": 510
+        },
+        {
+        "name": "drawer",
+        "sprite": None,
+        "state": 0,  # 0: small, 1: show, 2: end
+        "display": True,
+        "pathSmall": "img/items/front/drawerSmall.png",
+        "pathShow": "img/items/front/drawerShow.png",
+        "pathEnd": "img/items/front/drawerEnd.png",
+        "scale": 0.5,
+        "place": "front",
+        "x": 280,
+        "y": 44
+        }
+        
     ]
 }
 
@@ -116,7 +194,7 @@ backpack_list = [
         "name": "hammer",
         "sprite": None,
         "state": 0,  # 0: not used, 1: used CURRENTLY NO USE
-        "scale": 0.18,
+        "scale": 0.5,
         "display": False,
         "path": "img/items/doorLeft/hammer.png"
     },
@@ -127,7 +205,23 @@ backpack_list = [
         "scale": 0.11,
         "display": False,
         "path": "img/items/mainTheme/ragSmall.png"
-        },
+    },
+    {
+        "name": "lighter",
+        "sprite": None,
+        "state": 0,  # 0: small, 1: took
+        "scale": 0.4,
+        "display": False,
+        "path": "img/items/back/lighterSmall.png"
+    },
+    {
+        "name": "key",
+        "sprite": None,
+        "state": 0,  # 0: small, 1: took
+        "scale": 0.4,
+        "display": False,
+        "path": "img/items/doorLeft/key.png"
+    }
 ]
 
 control_list = [
@@ -190,4 +284,46 @@ code_list = {
             "scale": 0.8
         },
     ],
+    "doorCode": [
+        {
+            "name": "c0",
+            "path": "img/items/doorRight/c0.png",
+        },
+        {
+            "name": "c1",
+            "path": "img/items/doorRight/c1.png",
+        },
+        {
+            "name": "c2",
+            "path": "img/items/doorRight/c2.png",
+        },
+        {
+            "name": "c3",
+            "path": "img/items/doorRight/c3.png",
+        },
+        {
+            "name": "c4",
+            "path": "img/items/doorRight/c4.png",
+        },
+        {
+            "name": "c5",
+            "path": "img/items/doorRight/c5.png",
+        },
+        {
+            "name": "c6",
+            "path": "img/items/doorRight/c6.png",
+        },
+        {
+            "name": "c7",
+            "path": "img/items/doorRight/c7.png",
+        },
+        {
+            "name": "c8",
+            "path": "img/items/doorRight/c8.png",
+        },
+        {
+            "name": "c9",
+            "path": "img/items/doorRight/c9.png",
+        }
+    ]
 }
