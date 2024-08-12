@@ -186,7 +186,7 @@ backpack_list = [
         "name": "flashlight",  # need to be changed into flashlight
         "sprite": None,
         "state": 0,
-        "scale": 0.3,
+        "scale": 0.5,
         "display": False,
         "path": "img/items/doorRight/flashlight.png"
     },

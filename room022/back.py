@@ -58,6 +58,7 @@ class Back(sceneUtil.Scenes):
                 backpack_list[3]["display"] = True
                 self.set_backpack()
                 self.pre_action = None
+                self.on_draw()
         # click on shell
         shell = self.items["shell"]["sprite"]
         if(shell.collides_with_point((x, y))):

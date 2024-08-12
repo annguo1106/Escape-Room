@@ -88,6 +88,7 @@ class Front(sceneUtil.Scenes):
                     self.scene.get_sprite_list("Backpack").clear()
                     self.hand_item = None
                     self.set_backpack()
+                    self.on_draw()
                 else:
                     path = os.path.join(self.current_path, '..', item_list["front"][1]["pathRes"])
                 self.load_sp(notebook, item_list["front"][1]["scale"] * 1.5, 550, 325, path)

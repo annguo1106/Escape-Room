@@ -47,7 +47,6 @@ class MainTheme(sceneUtil.Scenes):
                     item_list["mainTheme"][0]["state"] = 1
                     backpack_list[2]["display"] = False
                     self.hand_item = None
-                    self.scene.get_sprite_list("Backpack").clear()
                     self.set_backpack()
                 else:
                     path = os.path.join(self.current_path, '..', self.drawer["pathShow"])

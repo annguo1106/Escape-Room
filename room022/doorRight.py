@@ -59,7 +59,6 @@ class DoorRight(sceneUtil.Scenes):
                     item_list["doorRight"][1]["state"] = 1
                     backpack_list[0]["display"] = False # flashlight used
                     self.hand_item = None
-                    self.scene.get_sprite_list("Backpack").clear()
                     self.set_backpack()
                 # didn't use flashlight
                 else:
@@ -84,7 +83,6 @@ class DoorRight(sceneUtil.Scenes):
                     item_list["doorRight"][0]["state"] = 1 # vase broke
                     backpack_list[1]["display"] = False # hammer used
                     # reset backpack
-                    self.scene.get_sprite_list("Backpack").clear()
                     self.hand_item = None
                     self.set_backpack()
                     self.pre_action = None
@@ -133,8 +131,8 @@ class DoorRight(sceneUtil.Scenes):
                     print("correct!")
                     # for c in self.door_code:
                     #     c["sprite"].remove_from_sprite_lists()
-                    # path = os.path.join(self.current_path, '..', item_list["doorRight"][2]["pathRes"])
-                    # self.load_sp(lock, item_list["doorRight"][2]["scale"] * 1.7, 550, 325, path)
+                    path = os.path.join(self.current_path, '..', item_list["doorRight"][2]["pathRes"])
+                    self.load_sp(lock, item_list["doorRight"][2]["scale"] * 1.7, 550, 325, path)
             # decoded
             elif item_list["doorRight"][1]["state"] == 2:
                 # if use key

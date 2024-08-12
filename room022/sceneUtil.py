@@ -29,7 +29,11 @@ class Scenes(arcade.View):
 		sp.hit_box = sp.texture.hit_box_points
 	
 	def set_backpack(self):
+		for item in self.backpack:
+			item["sprite"].remove_from_sprite_lists()
 		self.backpack.clear()
+		if "Backpack" in self.scene.sprite_lists:
+			self.scene.get_sprite_list("Backpack").clear()
 		y = 550
 		for item in backpack_list:
 			if(item["display"]):
@@ -45,6 +49,7 @@ class Scenes(arcade.View):
 					"scale": item["scale"],
 					"click": False
 				})
+		self.on_draw()
     
 	def setup(self):
 		# backpack

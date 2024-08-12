@@ -81,6 +81,7 @@ class DoorLeft(sceneUtil.Scenes):
                 backpack_list[1]["display"] = True
                 self.set_backpack()
                 self.pre_action = None
+                self.on_draw()
             
             # show solved box
             elif item_list["doorLeft"][0]["state"] == 3:
@@ -118,6 +119,7 @@ class DoorLeft(sceneUtil.Scenes):
                 backpack_list[4]["display"] = True # receive key
                 self.set_backpack()
                 self.pre_action = None
+                self.on_draw()
             # key took    
             elif item_list["doorLeft"][1]["state"] == 4:
                 path = os.path.join(self.current_path, '..', item_list["doorLeft"][1]["pathEnd"])
