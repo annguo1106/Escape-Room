@@ -129,10 +129,7 @@ class Front(sceneUtil.Scenes):
             # code revealed
             elif item_list["front"][1]["state"] == 3:
                 path = os.path.join(self.current_path, '..', item_list["front"][1]["pathEnd"])
-                notebook.texture = arcade.load_texture(path)
-                notebook.hit_box = notebook.texture.hit_box_points
-                notebook.scale = 0.4
-                notebook.position = (550, 325)
+                self.load_sp(notebook, item_list["front"][1]["scale"] * 1.5, 550, 325, path)
                 self.pre_action = "click notebook"
     
         # click computer

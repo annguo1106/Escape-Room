@@ -86,7 +86,7 @@ class DoorRight(sceneUtil.Scenes):
                 # didn't use flashlight
                 else:
                     path = None
-            else:
+            elif item_list["doorRight"][1]["state"] == 1:
                 path = os.path.join(self.current_path, '..', item_list["doorRight"][1]["pathEnd"])
             self.load_sp(professorYen, 1, 550, 325, path)
             self.pre_action = "click professorYen"
@@ -152,6 +152,10 @@ class DoorRight(sceneUtil.Scenes):
                 # if use key
                 if self.pre_action == "click key":
                     path = os.path.join(self.current_path, '..', item_list["doorRight"][2]["pathEnd"])
+                    backpack_list[4]["display"] = False # key used
+                    # reset backpack
+                    self.hand_item = None
+                    self.set_backpack()
                 else:
                     path = os.path.join(self.current_path, '..', item_list["doorRight"][2]["pathRes"])
                 self.load_sp(lock, item_list["doorRight"][2]["scale"] * 1.5, 550, 325, path)    
@@ -161,7 +165,6 @@ class DoorRight(sceneUtil.Scenes):
                 self.load_sp(lock, item_list["doorRight"][2]["scale"] * 1.5, 550, 325, path)
                 print("you already exist this door!")
             self.pre_action = "click lock"
-        
             
         # at the click event end
         if self.hand_item:
