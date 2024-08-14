@@ -47,7 +47,6 @@ class Scenes(arcade.View):
 					"sprite": sp,
 					"name": item["name"],
 					"scale": item["scale"],
-					"click": False
 				})
 		self.on_draw()
     
@@ -101,17 +100,17 @@ class Scenes(arcade.View):
 		click = False
   		# click items in backpack
 		if x >= 0 and x <= 120:
-			# print("in backpack:")
-			for item in self.backpack:
-				sp = item["sprite"]
-				# print(item["name"])
-				if(sp.collides_with_point((x, y))):
-					# print("click ", item["name"])
-					self.hand_item = item
-					if(self.pre_action and self.pre_action.startswith("click")):
-						for j in range(len(self.backpack)):
-							if(("click " + self.backpack[j]["name"]) == self.pre_action):
-								self.backpack[j]["sprite"].scale = self.backpack[j]["scale"]
-								break
-					sp.scale = item["scale"] * 1.2
-					self.pre_action = "click " + item["name"]
+			if self.pre_action == None:
+				for item in self.backpack:
+					sp = item["sprite"]
+					# print(item["name"])
+					if(sp.collides_with_point((x, y))):
+						# reset previous item
+						self.hand_item = item
+						if(self.pre_action and self.pre_action.startswith("click")):
+							for j in range(len(self.backpack)):
+								if(("click " + self.backpack[j]["name"]) == self.pre_action):
+									self.backpack[j]["sprite"].scale = self.backpack[j]["scale"]
+									break
+						sp.scale = item["scale"] * 1.2
+						self.pre_action = "click " + item["name"]

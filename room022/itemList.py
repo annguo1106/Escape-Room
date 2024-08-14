@@ -92,13 +92,25 @@ item_list = {
         "pathRes": "img/items/doorLeft/safeRes.png", # safe under poster
         "pathIt": "img/items/doorLeft/key.png", # key
         "pathEnd": "img/items/doorLeft/safeEnd.png", # end
-        "scale": 0.2,
+        "scale": 0.5,
         "place": "doorLeft",
         "x": 260,
         "y": 450
-        }
+        },
+        
     ],
     "back": [
+        {
+        "name": "lighter",
+        "sprite": None,
+        "state": 0,  # 0: small, 1: took
+        "display": True,
+        "pathSmall": "img/items/back/lighter.png",
+        "scale": 0.3,
+        "place": "back",
+        "x": 870,
+        "y": 301
+        },
         {
         "name": "shell",
         "sprite": None,
@@ -107,22 +119,11 @@ item_list = {
         "pathSmall": "img/items/back/shellSmall.png",
         "pathShow": "img/items/back/shellShow.png",
         "pathEnd": "img/items/back/shellEnd.png",
-        "scale": 0.4,
+        "scale": 0.6,
         "place": "doorLeft",
-        "x": 330,
-        "y": 325
-        },
-        {
-        "name": "lighter",
-        "sprite": None,
-        "state": 0,  # 0: small, 1: took
-        "display": True,
-        "pathSmall": "img/items/back/lighter.png",
-        "scale": 0.4,
-        "place": "back",
-        "x": 330,
-        "y": 325
-        }
+        "x": 340,
+        "y": 330
+        }        
     ],
     "front": [
         {
@@ -212,7 +213,7 @@ backpack_list = [
         "state": 0,  # 0: small, 1: took
         "scale": 0.4,
         "display": False,
-        "path": "img/items/back/lighterSmall.png"
+        "path": "img/items/back/lighter.png"
     },
     {
         "name": "key",

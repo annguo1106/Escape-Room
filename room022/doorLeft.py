@@ -66,8 +66,27 @@ class DoorLeft(sceneUtil.Scenes):
         box = self.items["box"]["sprite"]
         poster = self.items["poster"]["sprite"]
         
+        # handle exist first
+        # exist box
+        if(self.pre_action == "click box" and (x <= 193 or x >= 907 or y <= 191 or y >= 459)):
+            path = os.path.join(self.current_path, '..', item_list["doorLeft"][0]["pathSmall"])
+            self.load_sp(box, item_list["doorLeft"][0]["scale"], item_list["doorLeft"][0]["x"], item_list["doorLeft"][0]["y"], path)
+            self.pre_action = None
+            if item_list["doorLeft"][0]["state"] == 1:
+                item_list["doorLeft"][0]["state"] = 0
+        
+        # exist poster
+        elif(self.pre_action == "click poster" and not poster.collides_with_point((x, y))):
+            print("exist safe")
+            path = os.path.join(self.current_path, '..', item_list["doorLeft"][1]["pathSmall"])
+            self.load_sp(poster, 0.5, item_list["doorLeft"][1]["x"], item_list["doorLeft"][1]["y"], path)
+            self.pre_action = None
+            # decoding not finished
+            if item_list["doorLeft"][1]["state"] == 2:
+                item_list["doorLeft"][1]["state"] = 1
+        
         # click on box
-        if(box.collides_with_point((x, y))):
+        elif(box.collides_with_point((x, y))):
             # before decoding
             if item_list["doorLeft"][0]["state"] == 0:
                 self.load_sp(box, item_list["doorLeft"][0]["scale"] * 2.4, 550, 325)
@@ -81,7 +100,6 @@ class DoorLeft(sceneUtil.Scenes):
                 backpack_list[1]["display"] = True
                 self.set_backpack()
                 self.pre_action = None
-                self.on_draw()
             
             # show solved box
             elif item_list["doorLeft"][0]["state"] == 3:
@@ -89,14 +107,6 @@ class DoorLeft(sceneUtil.Scenes):
                 self.load_sp(box, item_list["doorLeft"][0]["scale"] * 2.4, 550, 325, path)
                 self.pre_action = "click box" 
                 
-        # exist box
-        elif(self.pre_action == "click box" and (x <= 193 or x >= 907 or y <= 191 or y >= 459)):
-            path = os.path.join(self.current_path, '..', item_list["doorLeft"][0]["pathSmall"])
-            self.load_sp(box, item_list["doorLeft"][0]["scale"], item_list["doorLeft"][0]["x"], item_list["doorLeft"][0]["y"], path)
-            self.pre_action = None
-            if item_list["doorLeft"][0]["state"] == 1:
-                item_list["doorLeft"][0]["state"] = 0
-        
         # click poster
         elif(poster.collides_with_point((x, y))):
             # remove poster
@@ -119,30 +129,19 @@ class DoorLeft(sceneUtil.Scenes):
                 backpack_list[4]["display"] = True # receive key
                 self.set_backpack()
                 self.pre_action = None
-                self.on_draw()
+
             # key took    
             elif item_list["doorLeft"][1]["state"] == 4:
                 path = os.path.join(self.current_path, '..', item_list["doorLeft"][1]["pathEnd"])
                 self.load_sp(poster, 1.1, 550, 325, path)
                 self.pre_action = "click poster"
-        # exist poster
-        elif(self.pre_action == "click poster" and not poster.collides_with_point((x, y))):
-            print("exist safe")
-            path = os.path.join(self.current_path, '..', item_list["doorLeft"][1]["pathSmall"])
-            poster.texture = arcade.load_texture(path)
-            poster.hit_box = poster.texture.hit_box_points
-            poster.scale = item_list["doorLeft"][1]["scale"]
-            poster.position = (item_list["doorLeft"][1]["x"], item_list["doorLeft"][1]["y"])
-            self.pre_action = None
-            # decoding not finished
-            if item_list["doorLeft"][1]["state"] == 2:
-                item_list["doorLeft"][1]["state"] = 1
+        
             
         # at the click event end
-        for item in self.backpack:
-            sp = item["sprite"]
-            if(self.pre_action == ("click " + item["name"]) and not sp.collides_with_point((x, y))):
-                sp.scale = item["scale"]
-                self.pre_action = None
- 
-        
+        if self.hand_item:
+            # print("hand item:", self.hand_item["name"])
+            if(self.hand_item["sprite"].scale != self.hand_item["scale"] and not self.hand_item["sprite"].collides_with_point((x, y))):
+                self.hand_item["sprite"].scale = self.hand_item["scale"]
+                if(self.pre_action == ("click " + self.hand_item["name"])):
+                    self.hand_item = None
+                    self.pre_action = None

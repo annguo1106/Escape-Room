@@ -65,6 +65,7 @@ class MainTheme(sceneUtil.Scenes):
         elif(self.pre_action == "click drawer" and (self.drawer != None and not self.drawer["sprite"].collides_with_point((x, y)))):
             self.drawer["sprite"].remove_from_sprite_lists()
             self.drawer = None
+            self.pre_action = None
             
         # at the click event end
         if self.hand_item:
@@ -74,5 +75,6 @@ class MainTheme(sceneUtil.Scenes):
                 self.hand_item["sprite"].scale = self.hand_item["scale"]
                 if(self.pre_action == ("click " + self.hand_item["name"])):
                     # print("change pre action")
+                    # self.hand_item = None
                     self.pre_action = None
                 

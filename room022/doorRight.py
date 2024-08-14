@@ -50,8 +50,31 @@ class DoorRight(sceneUtil.Scenes):
         vase = self.items["vase"]["sprite"]
         lock = self.items["lock"]["sprite"]
         
+        # handle exist first
+        # exist vase
+        if(self.pre_action == "click vase" and not vase.collides_with_point((x, y))):
+            path = os.path.join(self.current_path, '..', item_list["doorRight"][0]["pathSmall"])
+            self.load_sp(vase, item_list["doorRight"][0]["scale"], item_list["doorRight"][0]["x"], item_list["doorRight"][0]["y"], path)
+            self.pre_action = None
+        
+        # exist professor Yen
+        elif(self.pre_action == "click professorYen" and not professorYen.collides_with_point((x, y))):
+            path = os.path.join(self.current_path, '..', item_list["doorRight"][1]["pathSmall"])
+            self.load_sp(professorYen, item_list["doorRight"][1]["scale"], item_list["doorRight"][1]["x"], item_list["doorRight"][1]["y"], path)
+            self.pre_action = None
+        
+        # exist lock
+        elif(self.pre_action == "click lock" and not lock.collides_with_point((x, y))):
+            path = os.path.join(self.current_path, '..', item_list["doorRight"][2]["pathSmall"])
+            self.load_sp(lock, item_list["doorRight"][2]["scale"], item_list["doorRight"][2]["x"], item_list["doorRight"][2]["y"], path)
+            for c in self.door_code:
+                c["sprite"].remove_from_sprite_lists()
+            if item_list["doorRight"][1]["state"] == 1:
+                item_list["doorRight"][1]["state"] = 0
+            self.pre_action = None
+                
         # click on professorYen
-        if(professorYen.collides_with_point((x, y))):
+        elif(professorYen.collides_with_point((x, y))):
             if item_list["doorRight"][1]["state"] == 0:
                 # use flashlight
                 if self.pre_action == "click flashlight":
@@ -68,11 +91,6 @@ class DoorRight(sceneUtil.Scenes):
             self.load_sp(professorYen, 1, 550, 325, path)
             self.pre_action = "click professorYen"
             
-        # exist professor Yen
-        elif(self.pre_action == "click professorYen" and not professorYen.collides_with_point((x, y))):
-            path = os.path.join(self.current_path, '..', item_list["doorRight"][1]["pathSmall"])
-            self.load_sp(professorYen, item_list["doorRight"][1]["scale"], item_list["doorRight"][1]["x"], item_list["doorRight"][1]["y"], path)
-            self.pre_action = None
             
         # click on vase
         elif(vase.collides_with_point((x, y))):
@@ -103,11 +121,7 @@ class DoorRight(sceneUtil.Scenes):
                 self.load_sp(vase, item_list["doorRight"][0]["scale"] * 1.5, 550, 325, path)
                 self.pre_action = "click vase"
         
-        # exist vase
-        elif(self.pre_action == "click vase" and not vase.collides_with_point((x, y))):
-            path = os.path.join(self.current_path, '..', item_list["doorRight"][0]["pathSmall"])
-            self.load_sp(vase, item_list["doorRight"][0]["scale"], item_list["doorRight"][0]["x"], item_list["doorRight"][0]["y"], path)
-            self.pre_action = None
+        
         
         # click lock
         elif(lock.collides_with_point((x, y))):
@@ -147,15 +161,7 @@ class DoorRight(sceneUtil.Scenes):
                 self.load_sp(lock, item_list["doorRight"][2]["scale"] * 1.5, 550, 325, path)
                 print("you already exist this door!")
             self.pre_action = "click lock"
-        # exist lock
-        elif(self.pre_action == "click lock" and not lock.collides_with_point((x, y))):
-            path = os.path.join(self.current_path, '..', item_list["doorRight"][2]["pathSmall"])
-            self.load_sp(lock, item_list["doorRight"][2]["scale"], item_list["doorRight"][2]["x"], item_list["doorRight"][2]["y"], path)
-            for c in self.door_code:
-                c["sprite"].remove_from_sprite_lists()
-            if item_list["doorRight"][1]["state"] == 1:
-                item_list["doorRight"][1]["state"] = 0
-            self.pre_action = None
+        
             
         # at the click event end
         if self.hand_item:
@@ -163,4 +169,5 @@ class DoorRight(sceneUtil.Scenes):
             if(self.hand_item["sprite"].scale != self.hand_item["scale"] and not self.hand_item["sprite"].collides_with_point((x, y))):
                 self.hand_item["sprite"].scale = self.hand_item["scale"]
                 if(self.pre_action == ("click " + self.hand_item["name"])):
+                    self.hand_item = None
                     self.pre_action = None
