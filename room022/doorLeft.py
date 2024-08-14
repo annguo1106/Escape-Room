@@ -68,7 +68,7 @@ class DoorLeft(sceneUtil.Scenes):
         
         # handle exist first
         # exist box
-        if(self.pre_action == "click box" and (x <= 193 or x >= 907 or y <= 191 or y >= 459)):
+        if(self.pre_action == "click box" and not box.collides_with_point((x, y))):
             path = os.path.join(self.current_path, '..', item_list["doorLeft"][0]["pathSmall"])
             self.load_sp(box, item_list["doorLeft"][0]["scale"], item_list["doorLeft"][0]["x"], item_list["doorLeft"][0]["y"], path)
             self.pre_action = None

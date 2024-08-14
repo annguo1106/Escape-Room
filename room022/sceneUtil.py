@@ -9,14 +9,14 @@ class Scenes(arcade.View):
 		super().__init__()
 		self.scene = arcade.Scene()
 		self.code = arcade.Scene()
-		self.direction = []  # left, right, up, down
+		self.direction = []  # left, right, up, down (which scene can go)
 		self.items = {}
 		self.backpack = []
 		self.pre_action = None
 		self.scene_name = None
 		self.current_path = os.path.dirname(os.path.abspath(__file__))
-		self.hand_item = None
-		# self.has_backpack = False
+		self.hand_item = None  # record items in hand
+		
 	
 	def setBackground(self):
 		pass
@@ -74,7 +74,7 @@ class Scenes(arcade.View):
 				sp = arcade.Sprite(path, 0.8)
 				sp.set_position(control_list[i]["x"], control_list[i]["y"])
 				self.scene.add_sprite("Control", sp)
-				
+		
 		# scene name, direction and control in child
     
 	def on_show(self):

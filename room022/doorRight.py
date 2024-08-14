@@ -69,8 +69,8 @@ class DoorRight(sceneUtil.Scenes):
             self.load_sp(lock, item_list["doorRight"][2]["scale"], item_list["doorRight"][2]["x"], item_list["doorRight"][2]["y"], path)
             for c in self.door_code:
                 c["sprite"].remove_from_sprite_lists()
-            if item_list["doorRight"][1]["state"] == 1:
-                item_list["doorRight"][1]["state"] = 0
+            if item_list["doorRight"][2]["state"] == 1:
+                item_list["doorRight"][2]["state"] = 0
             self.pre_action = None
                 
         # click on professorYen
@@ -125,12 +125,12 @@ class DoorRight(sceneUtil.Scenes):
         
         # click lock
         elif(lock.collides_with_point((x, y))):
-            if item_list["doorRight"][1]["state"] == 0:
-                item_list["doorRight"][1]["state"] = 1
+            if item_list["doorRight"][2]["state"] == 0:
+                item_list["doorRight"][2]["state"] = 1
                 self.load_sp(lock, item_list["doorRight"][2]["scale"] * 3, 550, 325)
                 self.set_code()
             # decoding
-            elif item_list["doorRight"][1]["state"] == 1:
+            elif item_list["doorRight"][2]["state"] == 1:
                 i = 0
                 for c in self.door_code:
                     if(c["sprite"].collides_with_point((x, y))):
@@ -141,14 +141,12 @@ class DoorRight(sceneUtil.Scenes):
                     i += 1
                 # ans correct
                 if self.input_ans == self.door_ans:
-                    item_list["doorRight"][1]["state"] = 2
+                    item_list["doorRight"][2]["state"] = 2
                     print("correct!")
-                    # for c in self.door_code:
-                    #     c["sprite"].remove_from_sprite_lists()
                     path = os.path.join(self.current_path, '..', item_list["doorRight"][2]["pathRes"])
                     self.load_sp(lock, item_list["doorRight"][2]["scale"] * 1.7, 550, 325, path)
             # decoded
-            elif item_list["doorRight"][1]["state"] == 2:
+            elif item_list["doorRight"][2]["state"] == 2:
                 # if use key
                 if self.pre_action == "click key":
                     path = os.path.join(self.current_path, '..', item_list["doorRight"][2]["pathEnd"])
@@ -160,7 +158,7 @@ class DoorRight(sceneUtil.Scenes):
                     path = os.path.join(self.current_path, '..', item_list["doorRight"][2]["pathRes"])
                 self.load_sp(lock, item_list["doorRight"][2]["scale"] * 1.5, 550, 325, path)    
             # if all end
-            elif item_list["doorRight"][1]["state"] == 3:
+            elif item_list["doorRight"][2]["state"] == 3:
                 path = os.path.join(self.current_path, '..', item_list["doorRight"][2]["pathEnd"])
                 self.load_sp(lock, item_list["doorRight"][2]["scale"] * 1.5, 550, 325, path)
                 print("you already exist this door!")
