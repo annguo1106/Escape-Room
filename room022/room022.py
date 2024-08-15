@@ -1,7 +1,4 @@
 import arcade
-from sceneUtil import Scenes
-from itemList import item_list, backpack_list
-# from dialogueUtil import DialogueBox
 from constants import SCREEN_WIDTH, SCREEN_HEIGHT 
 from mainTheme import MainTheme
 from doorLeft import DoorLeft
@@ -9,7 +6,6 @@ from doorRight import DoorRight
 from back import Back
 from front import Front
 
-# mainTheme = MainTheme()
 
 class Game(arcade.Window):
 	def __init__(self):

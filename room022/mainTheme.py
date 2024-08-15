@@ -12,6 +12,7 @@ class MainTheme(sceneUtil.Scenes):
         
     def setBackground(self):
         path = os.path.join(self.current_path, '..', "img/background/mainTheme.png")
+        path = self.resource_path(path)
         background = arcade.Sprite(path, 1.02)
         background.center_x = 561
         background.center_y = 325
@@ -75,6 +76,6 @@ class MainTheme(sceneUtil.Scenes):
                 self.hand_item["sprite"].scale = self.hand_item["scale"]
                 if(self.pre_action == ("click " + self.hand_item["name"])):
                     # print("change pre action")
-                    # self.hand_item = None
+                    self.hand_item = None
                     self.pre_action = None
                 
