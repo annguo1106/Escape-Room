@@ -769,7 +769,7 @@ class Door(arcade.View):
         #         arcade.draw_point(item.right, item.bottom, arcade.color.RED, 10)
         
         # 門口解謎
-        if(self.item_list[1]["show big"]):
+        if(self.item_list[1]["show big"] and display_items["door"] == 1):
             self.scene["door_password"].draw()
         
         # oj 寶箱解謎
@@ -916,9 +916,9 @@ class Door(arcade.View):
 
                 # password correct, open
                 if(self.door_pw == "1011"):
-                    # big = None
+                    big = arcade.load_texture("img/items/door_門口開門.jpg")
+                    display_items["door"] = 2
                     print("correct")
-                    return
                 else:
                     return
             # 未解密
@@ -926,7 +926,7 @@ class Door(arcade.View):
                 big = arcade.load_texture("img/items/door_門口密碼.jpg")
             # 解密，開門
             else:
-                big = None
+                big = arcade.load_texture("img/items/door_門口開門.jpg")
             door.texture = big
             door.hit_box = door.texture.hit_box_points
             door.scale = 0.55
