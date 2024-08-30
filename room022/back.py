@@ -1,7 +1,7 @@
 import arcade
-import sceneUtil
+from . import sceneUtil
 import os
-from itemList import item_list, code_list, backpack_list
+from .itemList import item_list, code_list, backpack_list
 
 class Back(sceneUtil.Scenes):
     def __init__(self):
@@ -65,7 +65,6 @@ class Back(sceneUtil.Scenes):
             # before decoding
             if item_list["back"][1]["state"] == 0:
                 self.pre_action = "click shell"
-                print("in state 0, ", self.pre_action)
                 item_list["back"][1]["state"] = 1
                 path = os.path.join(self.current_path, '..', item_list["back"][1]["pathShow"])
                 self.load_sp(shell, 0.8, 550, 350, path)
@@ -107,7 +106,6 @@ class Back(sceneUtil.Scenes):
                                     self.hand_item = None
                             place += 25
                     self.pre_action = "click shell"
-                    print("in state 1, doesn't click book, ", self.pre_action)
                     # print("hand item:", self.hand_item["name"])
                 if self.book_count == 5:  # check ans
                     if self.book_ans != self.book_place:
@@ -141,9 +139,7 @@ class Back(sceneUtil.Scenes):
         
         # at the click event end
         if self.hand_item:
-            print("hand item:", self.hand_item["name"])
             if(self.hand_item["sprite"].scale != self.hand_item["scale"] and not self.hand_item["sprite"].collides_with_point((x, y))):
-                print("change scale")
                 self.hand_item["sprite"].scale = self.hand_item["scale"]
                 if(self.pre_action == ("click " + self.hand_item["name"])):
                     # print("change pre action")

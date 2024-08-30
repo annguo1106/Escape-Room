@@ -1,10 +1,10 @@
 import arcade
-from constants import SCREEN_WIDTH, SCREEN_HEIGHT 
-from mainTheme import MainTheme
-from doorLeft import DoorLeft
-from doorRight import DoorRight
-from back import Back
-from front import Front
+from .constants import SCREEN_WIDTH, SCREEN_HEIGHT 
+from .mainTheme import MainTheme
+from .doorLeft import DoorLeft
+from .doorRight import DoorRight
+from .back import Back
+from .front import Front
 
 
 class Game(arcade.Window):
@@ -21,7 +21,7 @@ class Game(arcade.Window):
 		# left and right control position done
 		CONTROL_COR = [[140, 10], [940, 10], [540, 605], [540, 10]]
 		next = "-1"
-		print("check -> room022-on_mouse_press", "x", x, "y", y)
+		# print("check -> room022-on_mouse_press", "x", x, "y", y)
 		for i in range(4):
 			if(self.current_view.direction[i] != "None" and
       			x >= CONTROL_COR[i][0] and x <= CONTROL_COR[i][0] + 40 and
@@ -44,7 +44,3 @@ class Game(arcade.Window):
     
 			self.show_view(next_view)
 
-
-if __name__ == "__main__":
-	window = Game()
-	arcade.run()

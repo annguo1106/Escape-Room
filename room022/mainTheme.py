@@ -1,7 +1,7 @@
 import arcade
-import sceneUtil
+from . import sceneUtil
 import os
-from itemList import item_list, backpack_list
+from .itemList import item_list, backpack_list
 
 class MainTheme(sceneUtil.Scenes):
     def __init__(self):
@@ -12,7 +12,6 @@ class MainTheme(sceneUtil.Scenes):
         
     def setBackground(self):
         path = os.path.join(self.current_path, '..', "img/background/mainTheme.png")
-        path = self.resource_path(path)
         background = arcade.Sprite(path, 1.02)
         background.center_x = 561
         background.center_y = 325
@@ -70,7 +69,7 @@ class MainTheme(sceneUtil.Scenes):
             
         # at the click event end
         if self.hand_item:
-            print("hand item:", self.hand_item["name"])
+            # print("hand item:", self.hand_item["name"])
             if(self.hand_item["sprite"].scale != self.hand_item["scale"] and not self.hand_item["sprite"].collides_with_point((x, y))):
                 # print("change scale")
                 self.hand_item["sprite"].scale = self.hand_item["scale"]

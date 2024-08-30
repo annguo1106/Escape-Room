@@ -1,7 +1,7 @@
 import arcade
-import sceneUtil
+from . import sceneUtil
 import os
-from itemList import item_list, backpack_list, code_list
+from .itemList import item_list, backpack_list, code_list
 
 
 class DoorRight(sceneUtil.Scenes):
@@ -38,7 +38,7 @@ class DoorRight(sceneUtil.Scenes):
         
     def on_draw(self):
         super().on_draw()
-        if item_list["doorRight"][1]["state"] == 1:
+        if item_list["doorRight"][2]["state"] == 1:
             self.code.draw()
         arcade.finish_render()
     
@@ -142,7 +142,7 @@ class DoorRight(sceneUtil.Scenes):
                 # ans correct
                 if self.input_ans == self.door_ans:
                     item_list["doorRight"][2]["state"] = 2
-                    print("correct!")
+                    # print("correct!")
                     path = os.path.join(self.current_path, '..', item_list["doorRight"][2]["pathRes"])
                     self.load_sp(lock, item_list["doorRight"][2]["scale"] * 1.7, 550, 325, path)
             # decoded
@@ -154,6 +154,7 @@ class DoorRight(sceneUtil.Scenes):
                     # reset backpack
                     self.hand_item = None
                     self.set_backpack()
+                    item_list["doorRight"][2]["state"] = 3
                 else:
                     path = os.path.join(self.current_path, '..', item_list["doorRight"][2]["pathRes"])
                 self.load_sp(lock, item_list["doorRight"][2]["scale"] * 1.5, 550, 325, path)    
@@ -161,7 +162,7 @@ class DoorRight(sceneUtil.Scenes):
             elif item_list["doorRight"][2]["state"] == 3:
                 path = os.path.join(self.current_path, '..', item_list["doorRight"][2]["pathEnd"])
                 self.load_sp(lock, item_list["doorRight"][2]["scale"] * 1.5, 550, 325, path)
-                print("you already exist this door!")
+                # print("you already exist this door!")
             self.pre_action = "click lock"
             
         # at the click event end

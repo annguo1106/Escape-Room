@@ -1,9 +1,9 @@
 import arcade
 import arcade.gui
-import sceneUtil
+from . import sceneUtil
 import os
-from itemList import item_list, backpack_list
-from inputUtil import FInputBox
+from .itemList import item_list, backpack_list
+from .inputUtil import FInputBox
 
 class DoorLeft(sceneUtil.Scenes):
     def __init__(self):
@@ -59,7 +59,7 @@ class DoorLeft(sceneUtil.Scenes):
     
                 
     def on_mouse_press(self, x: int, y: int, button: int, modifires: int):
-        print("pre_action:", self.pre_action)
+        # print("pre_action:", self.pre_action)
         super().on_mouse_press(x, y, button, modifires)
         
         # init
@@ -77,7 +77,7 @@ class DoorLeft(sceneUtil.Scenes):
         
         # exist poster
         elif(self.pre_action == "click poster" and not poster.collides_with_point((x, y))):
-            print("exist safe")
+            # print("exist safe")
             path = os.path.join(self.current_path, '..', item_list["doorLeft"][1]["pathSmall"])
             self.load_sp(poster, 0.5, item_list["doorLeft"][1]["x"], item_list["doorLeft"][1]["y"], path)
             self.pre_action = None

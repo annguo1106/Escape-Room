@@ -3,7 +3,7 @@ import arcade.csscolor
 import arcade.csscolor
 import os
 import sys
-from itemList import backpack_list, item_list, control_list
+from .itemList import backpack_list, item_list, control_list
 
 class Scenes(arcade.View):
 	def __init__(self):
@@ -17,13 +17,6 @@ class Scenes(arcade.View):
 		self.scene_name = None
 		self.current_path = os.path.dirname(os.path.abspath(__file__))
 		self.hand_item = None  # record items in hand
-	
-	def resource_path(self, path):
-		try:
-			base = sys._MEIPASS
-		except Exception:
-			base = os.path.abspath(".")
-		return os.path.join(base, path)
  
 	def setBackground(self):
 		pass

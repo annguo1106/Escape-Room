@@ -1,8 +1,8 @@
 import arcade
-import sceneUtil
+from . import sceneUtil
 import os
-from inputUtil import FInputBox
-from itemList import item_list, backpack_list
+from .inputUtil import FInputBox
+from .itemList import item_list, backpack_list
 
 class Front(sceneUtil.Scenes):
     def __init__(self):
@@ -23,7 +23,7 @@ class Front(sceneUtil.Scenes):
     def setup(self):
         super().setup()
         self.input_computer = FInputBox(375, 6, "STRQND")
-        self.input_drawer = FInputBox(239, 4, "2984")
+        self.input_drawer = FInputBox(239, 4, "2684")
         self.input_notebook = FInputBox(315, 5, "ASBZY")
     
     def on_draw(self):
