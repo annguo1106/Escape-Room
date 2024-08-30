@@ -1,0 +1,6 @@
+/venv
+*.spec
+/build
+/dist
+escape room.zip
+game.exe

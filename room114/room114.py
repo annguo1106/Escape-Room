@@ -2,7 +2,7 @@ import arcade
 import arcade.color
 import arcade.resources
 import arcade.resources
-import utils
+import room114.utils as utils
 import gc
 import psutil
 
@@ -70,16 +70,16 @@ display_items = {
     'red_pen_box': 1
 }
 
-class MyGame(arcade.Window):
-    def __init__(self):
-        # set up window
-        super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
-        # go to the starting view: classroom
-        current_view = Classroom()
-        self.show_view(current_view)
+# class MyGame(arcade.Window):
+#     def __init__(self):
+#         # set up window
+#         super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
+#         # go to the starting view: classroom
+#         current_view = Classroom()
+#         self.show_view(current_view)
 
-    def setup(self):
-        pass
+#     def setup(self):
+#         pass
 
 
 class Classroom(arcade.View):
@@ -1982,10 +1982,10 @@ class Table(arcade.View):
             self.window.show_view(nxt_view)
 
 
-def main():
-    window = MyGame()
-    window.setup()
-    arcade.run()
+# def main():
+#     window = MyGame()
+#     window.setup()
+#     arcade.run()
 
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()
