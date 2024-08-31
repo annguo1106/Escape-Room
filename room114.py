@@ -7,6 +7,8 @@ import utils      # when run room114.py
 # import room114.utils as utils   # when run game.py
 import gc
 import psutil
+from room022.room022.room022 import Game
+from mid import Middle_screen
 
 SCREEN_WIDTH = 1000
 SCREEN_HEIGHT = 650
@@ -16,6 +18,8 @@ CONTROL_SCALING = 0.8
 CONTROL_ALPHA = 140     # the transparency of the img, range(0, 255)
 
 CONTROL_COR = [[-100, -100], [540, 10], [140, 10], [940, 10]]
+
+is_exist = False
 
 # items that should show in backpack
 # display: 0: 未拿取, 1: 已拿取, 2: 用完了(不可以重複拿取)
@@ -101,6 +105,27 @@ class Start_screen(arcade.View):
 
     def on_mouse_press(self, x: int, y: int, button: int, modifiers: int):
         nxt_view = Classroom()
+        self.window.show_view(nxt_view)
+
+class Middle_screen(arcade.View):
+    def __init__(self):
+        super().__init__()
+
+    def setup(self):
+        pass
+
+    def on_show(self):
+        self.setup()
+
+    def on_draw(self):
+        arcade.start_render()
+        arcade.set_background_color(arcade.color.PINK_PEARL)
+        arcade.draw_text("click here to move to the next room", 30, 325, arcade.color.BLACK, 45)
+        arcade.finish_render()
+
+    def on_mouse_press(self, x: int, y: int, button: int, modifiers: int):
+        print("go to 022")
+        nxt_view = Game()
         self.window.show_view(nxt_view)
 
 class Classroom(arcade.View):
@@ -621,6 +646,7 @@ class Door(arcade.View):
         self.ojbox_pw = [0, 0, 0, 0]    # list to record player's password
 
         self.last_draw = "none"
+        self.is_exist = False
 
     def setup(self):
         # background
@@ -862,6 +888,9 @@ class Door(arcade.View):
             self.door_pw = ""
             click  = True
             self.item_list[1]["show big"] = False
+            if(self.is_exist):
+                nxt_view = Middle_screen()
+                self.window.show_view(nxt_view)
             return
         
         # press control?
@@ -940,6 +969,7 @@ class Door(arcade.View):
                     big = arcade.load_texture("img/items/door_門口開門.jpg")
                     display_items["door"] = 2
                     print("correct")
+                    self.is_exist = True
                 else:
                     return
             # 未解密
@@ -2003,10 +2033,10 @@ class Table(arcade.View):
             self.window.show_view(nxt_view)
 
 
-def main():
+def main114():
     window = MyGame()
     window.setup()
     arcade.run()
 
 if __name__ == "__main__":
-    main()
+    main114()
