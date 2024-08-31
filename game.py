@@ -1,6 +1,7 @@
 import arcade
 from room022.room022.room022 import Game
 from room114.room114 import Classroom
+from room114 import room114 as room114
 SCREEN_WIDTH = 1000
 SCREEN_HEIGHT = 650
 SCREEN_TITLE = "ESCAPE ROOM"
@@ -32,10 +33,11 @@ class roomManager(arcade.Window):
     
     def on_mouse_press(self, x: int, y: int, button: int, modifiers: int):
         if self.current_scene == "start screen":
-            self.current_scene = "room 022"
-            self.current_room = self.room2
-            self.current_room.setup()
-            self.current_room.on_draw()
+            self.current_scene = "room 114"
+            self.current_room = self.room1
+            # self.current_room.setup()
+            # self.current_room.on_draw()
+            room114.MyGame()
             
     def on_draw(self):
         arcade.start_render()

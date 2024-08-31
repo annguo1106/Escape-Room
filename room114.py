@@ -1,8 +1,10 @@
 import arcade
 import arcade.color
+import arcade.color
 import arcade.resources
 import arcade.resources
-import room114.utils as utils
+import utils      # when run room114.py
+# import room114.utils as utils   # when run game.py
 import gc
 import psutil
 
@@ -70,17 +72,36 @@ display_items = {
     'red_pen_box': 1
 }
 
-# class MyGame(arcade.Window):
-#     def __init__(self):
-#         # set up window
-#         super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
-#         # go to the starting view: classroom
-#         current_view = Classroom()
-#         self.show_view(current_view)
+class MyGame(arcade.Window):
+    def __init__(self):
+        # set up window
+        super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
+        # go to the starting view: classroom
+        current_view = Start_screen()
+        self.show_view(current_view)
 
-#     def setup(self):
-#         pass
+    def setup(self):
+        pass
 
+class Start_screen(arcade.View):
+    def __init__(self):
+        super().__init__()
+
+    def setup(self):
+        pass
+
+    def on_show(self):
+        self.setup()
+
+    def on_draw(self):
+        arcade.start_render()
+        arcade.set_background_color(arcade.color.PINK_PEARL)
+        arcade.draw_text("click here to start", 250, 325, arcade.color.BLACK, 50)
+        arcade.finish_render()
+
+    def on_mouse_press(self, x: int, y: int, button: int, modifiers: int):
+        nxt_view = Classroom()
+        self.window.show_view(nxt_view)
 
 class Classroom(arcade.View):
     def __init__(self):
@@ -1982,10 +2003,10 @@ class Table(arcade.View):
             self.window.show_view(nxt_view)
 
 
-# def main():
-#     window = MyGame()
-#     window.setup()
-#     arcade.run()
+def main():
+    window = MyGame()
+    window.setup()
+    arcade.run()
 
-# if __name__ == "__main__":
-#     main()
+if __name__ == "__main__":
+    main()
