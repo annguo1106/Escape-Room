@@ -12,6 +12,7 @@ class DoorRight(sceneUtil.Scenes):
         self.door_code = []
         self.door_ans = [6, 2, 3, 4, 0]
         self.input_ans = [0] * 5
+        self.exist = False
         
     def setBackground(self):
         path = os.path.join(self.current_path, '..', "img/background/doorRight.jpg")
@@ -143,8 +144,9 @@ class DoorRight(sceneUtil.Scenes):
                 if self.input_ans == self.door_ans:
                     item_list["doorRight"][2]["state"] = 2
                     # print("correct!")
-                    path = os.path.join(self.current_path, '..', item_list["doorRight"][2]["pathRes"])
-                    self.load_sp(lock, item_list["doorRight"][2]["scale"] * 1.7, 550, 325, path)
+                    self.exist = True
+                    # path = os.path.join(self.current_path, '..', item_list["doorRight"][2]["pathRes"])
+                    # self.load_sp(lock, item_list["doorRight"][2]["scale"] * 1.7, 550, 325, path)
             # decoded
             elif item_list["doorRight"][2]["state"] == 2:
                 # if use key
