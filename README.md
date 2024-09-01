@@ -8,4 +8,4 @@ The environment is python 3.11, module: arcade
 
 ## download link:
 You can download this game directly from this page: \
-<a href="https://ann1106.itch.io/escape-nycucs" target="_blank">link</a>
+[link](https://ann1106.itch.io/escape-nycucs)
