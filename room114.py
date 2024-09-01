@@ -2114,12 +2114,3 @@ class Table(arcade.View):
         elif(key == arcade.key.F):
             nxt_view = Table()
             self.window.show_view(nxt_view)
-
-
-def main114():
-    window = MyGame()
-    window.setup()
-    arcade.run()
-
-if __name__ == "__main__":
-    main114()

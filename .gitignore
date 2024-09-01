@@ -4,3 +4,6 @@
 /dist
 escape room.zip
 game.exe
+game.spec
+/dist
+/__pycache__
