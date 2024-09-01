@@ -12,6 +12,7 @@ class DoorRight(sceneUtil.Scenes):
         self.door_code = []
         self.door_ans = [6, 2, 3, 4, 0]
         self.input_ans = [0] * 5
+        self.exist = False
         
     def setBackground(self):
         path = os.path.join(self.current_path, '..', "img/background/doorRight.jpg")
@@ -155,13 +156,14 @@ class DoorRight(sceneUtil.Scenes):
                     self.hand_item = None
                     self.set_backpack()
                     item_list["doorRight"][2]["state"] = 3
+                    self.exist = True
                 else:
                     path = os.path.join(self.current_path, '..', item_list["doorRight"][2]["pathRes"])
                 self.load_sp(lock, item_list["doorRight"][2]["scale"] * 1.5, 550, 325, path)    
             # if all end
-            elif item_list["doorRight"][2]["state"] == 3:
-                path = os.path.join(self.current_path, '..', item_list["doorRight"][2]["pathEnd"])
-                self.load_sp(lock, item_list["doorRight"][2]["scale"] * 1.5, 550, 325, path)
+            # elif item_list["doorRight"][2]["state"] == 3:
+            #     path = os.path.join(self.current_path, '..', item_list["doorRight"][2]["pathEnd"])
+            #     self.load_sp(lock, item_list["doorRight"][2]["scale"] * 1.5, 550, 325, path)
                 # print("you already exist this door!")
             self.pre_action = "click lock"
             

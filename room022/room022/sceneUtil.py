@@ -17,7 +17,8 @@ class Scenes(arcade.View):
 		self.scene_name = None
 		self.current_path = os.path.dirname(os.path.abspath(__file__))
 		self.hand_item = None  # record items in hand
- 
+		self.room = "022"
+	
 	def setBackground(self):
 		pass
 

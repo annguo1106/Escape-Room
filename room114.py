@@ -7,8 +7,9 @@ import utils      # when run room114.py
 # import room114.utils as utils   # when run game.py
 import gc
 import psutil
-from room022.room022.room022 import Game
-from mid import Middle_screen
+# from room022.room022.room022 import Game
+from room022.room022.mainTheme import MainTheme 
+
 
 SCREEN_WIDTH = 1000
 SCREEN_HEIGHT = 650
@@ -110,7 +111,7 @@ class Start_screen(arcade.View):
 class Middle_screen(arcade.View):
     def __init__(self):
         super().__init__()
-
+        self.room = "114"
     def setup(self):
         pass
 
@@ -125,7 +126,7 @@ class Middle_screen(arcade.View):
 
     def on_mouse_press(self, x: int, y: int, button: int, modifiers: int):
         print("go to 022")
-        nxt_view = Game()
+        nxt_view = MainTheme()
         self.window.show_view(nxt_view)
 
 class Classroom(arcade.View):
@@ -140,6 +141,7 @@ class Classroom(arcade.View):
         # previous action (click item, take from backpack...)
         self.pre_action = None
         self.has_backpack = False
+        self.room = "114"
 
     def setup(self):
         # background
@@ -310,6 +312,7 @@ class Blackboard(arcade.View):
         # previous action (click item, take from backpack...)
         self.pre_action = None
         self.has_backpack = False
+        self.room = "114"
 
     def setup(self):
         # background
@@ -647,6 +650,7 @@ class Door(arcade.View):
 
         self.last_draw = "none"
         self.is_exist = False
+        self.room = "114"
 
     def setup(self):
         # background
@@ -1058,6 +1062,7 @@ class Stage(arcade.View):
         self.drawer_pw = [[0]*4 for _ in range(4)]  # drawer's password
         self.has_eraser = False
         self.computer_pw = [8] * 5
+        self.room = "114"
 
     def setup(self):
         # background
@@ -1425,6 +1430,7 @@ class Corner(arcade.View):
         self.has_red_pen = False
         self.box_pw = [0, 0, 0]
         self.phone_pw = [180, 180, 180]
+        self.room = "114"
 
     def setup(self):
         # background
@@ -1779,7 +1785,8 @@ class Table(arcade.View):
         self.pre_action = None      # previous action (click item, take from backpack...)
         self.has_backpack = False
         self.password = [0, 0, 0]   # "B": 0, "D": 1, "F": 2, "J":3, "S":4
-
+        self.room = "114"
+        
     def setup(self):
         # background
         init = "img/background/table_init.jpg"
