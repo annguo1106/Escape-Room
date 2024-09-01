@@ -7,6 +7,7 @@ import utils      # when run room114.py
 # import room114.utils as utils   # when run game.py
 import gc
 import psutil
+import os
 # from room022.room022.room022 import Game
 from room022.room022.mainTheme import MainTheme 
 
@@ -77,36 +78,8 @@ display_items = {
     'red_pen_box': 1
 }
 
-class MyGame(arcade.Window):
-    def __init__(self):
-        # set up window
-        super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
-        # go to the starting view: classroom
-        current_view = Start_screen()
-        self.show_view(current_view)
-
-    def setup(self):
-        pass
-
-class Start_screen(arcade.View):
-    def __init__(self):
-        super().__init__()
-
-    def setup(self):
-        pass
-
-    def on_show(self):
-        self.setup()
-
-    def on_draw(self):
-        arcade.start_render()
-        arcade.set_background_color(arcade.color.PINK_PEARL)
-        arcade.draw_text("click here to start", 250, 325, arcade.color.BLACK, 50)
-        arcade.finish_render()
-
-    def on_mouse_press(self, x: int, y: int, button: int, modifiers: int):
-        nxt_view = Classroom()
-        self.window.show_view(nxt_view)
+# find the current direction
+c_path = os.path.dirname(os.path.abspath(__file__))
 
 class Middle_screen(arcade.View):
     def __init__(self):
@@ -146,21 +119,24 @@ class Classroom(arcade.View):
     def setup(self):
         # background
         init = "img/background/classroom_init.jpg"
-        bg = arcade.Sprite(init, 0.77)
+        path = os.path.join(c_path, init)
+        bg = arcade.Sprite(path, 0.77)
         bg.center_x = 560
         bg.center_y = 325
         self.scene.add_sprite("Background", bg)
         self.sprite_list.append(bg)
 
         # control
-        arrow_left = arcade.Sprite("img/control/arrow_left.png", CONTROL_SCALING)
+        path = os.path.join(c_path, "img/control/arrow_left.png")
+        arrow_left = arcade.Sprite(path, CONTROL_SCALING)
         arrow_left.center_x = 160
         arrow_left.center_y = 30
         arrow_left.alpha = CONTROL_ALPHA
         self.scene.add_sprite("Control", arrow_left)
         self.sprite_list.append(arrow_left)
 
-        arrow_right = arcade.Sprite("img/control/arrow_right.png", CONTROL_SCALING)
+        path = os.path.join(c_path, "img/control/arrow_right.png")
+        arrow_right = arcade.Sprite(path, CONTROL_SCALING)
         arrow_right.center_x = 960
         arrow_right.center_y = 30
         arrow_right.alpha = CONTROL_ALPHA
@@ -173,7 +149,8 @@ class Classroom(arcade.View):
             item = backpack[i]
             # should show in backpack, create its sprite
             if(item["display"] == 1):
-                sp = arcade.Sprite(item["path"], 0.08)
+                path = os.path.join(c_path, item["path"])
+                sp = arcade.Sprite(path, 0.08)
                 sp.position = (60, y)
                 y -= 90
                 self.scene.add_sprite("Backpack", sp)
@@ -317,28 +294,32 @@ class Blackboard(arcade.View):
     def setup(self):
         # background
         init = "img/background/blackboard_init.jpg"
-        bg = arcade.Sprite(init, 0.7)
+        path = os.path.join(c_path, init)
+        bg = arcade.Sprite(path, 0.7)
         bg.center_x = 560
         bg.center_y = 325
         self.scene.add_sprite("Background", bg)
         self.sprite_list.append(bg)
 
         # control
-        arrow_left = arcade.Sprite("img/control/arrow_left.png", CONTROL_SCALING)
+        path = os.path.join(c_path, "img/control/arrow_left.png")
+        arrow_left = arcade.Sprite(path, CONTROL_SCALING)
         arrow_left.center_x = 160
         arrow_left.center_y = 30
         arrow_left.alpha = CONTROL_ALPHA
         self.scene.add_sprite("Control", arrow_left)
         self.sprite_list.append(arrow_left)
 
-        arrow_right = arcade.Sprite("img/control/arrow_right.png", CONTROL_SCALING)
+        path = os.path.join(c_path, "img/control/arrow_right.png")
+        arrow_right = arcade.Sprite(path, CONTROL_SCALING)
         arrow_right.center_x = 960
         arrow_right.center_y = 30
         arrow_right.alpha = CONTROL_ALPHA
         self.scene.add_sprite("Control", arrow_right)
         self.sprite_list.append(arrow_right)
 
-        arrow_down = arcade.Sprite("img/control/arrow_down.png", CONTROL_SCALING)
+        path = os.path.join(c_path, "img/control/arrow_down.png")
+        arrow_down = arcade.Sprite(path, CONTROL_SCALING)
         arrow_down.center_x = 560
         arrow_down.center_y = 30
         arrow_down.alpha = CONTROL_ALPHA
@@ -346,7 +327,8 @@ class Blackboard(arcade.View):
         self.sprite_list.append(arrow_down)
 
         # items
-        exam_paper = arcade.Sprite("img/items/blackboard_考卷.jpg", 0.1)
+        path = os.path.join(c_path, "img/items/blackboard_考卷.jpg")
+        exam_paper = arcade.Sprite(path, 0.1)
         exam_paper.center_x = 690
         exam_paper.center_y = 70
         self.scene.add_sprite("Items", exam_paper)
@@ -356,8 +338,9 @@ class Blackboard(arcade.View):
             "show big": False
         })
         self.sprite_list.append(exam_paper)
-
-        dirty_blcakboard = arcade.Sprite("img/items/blackboard_髒黑板.jpg", 0.18)
+        
+        path = os.path.join(c_path, "img/items/blackboard_髒黑板.jpg")
+        dirty_blcakboard = arcade.Sprite(path, 0.18)
         dirty_blcakboard.center_x = 454
         dirty_blcakboard.center_y = 538
         self.scene.add_sprite("Items", dirty_blcakboard)
@@ -367,8 +350,9 @@ class Blackboard(arcade.View):
             "show big": False
         })
         self.sprite_list.append(dirty_blcakboard)
-
-        ladder = arcade.Sprite("img/items/blackboard_ladder.jpg", 0.245)
+        
+        path = os.path.join(c_path, "img/items/blackboard_ladder.jpg")
+        ladder = arcade.Sprite(path, 0.245)
         ladder.position = (390, 220)
         self.scene.add_sprite("Items", ladder)
         self.item_list.append({
@@ -384,7 +368,8 @@ class Blackboard(arcade.View):
             item = backpack[i]
             # should show in backpack, create its sprite
             if(item["display"] == 1):
-                sp = arcade.Sprite(item["path"], 0.08)
+                path = os.path.join(c_path, item["path"])
+                sp = arcade.Sprite(path, 0.08)
                 sp.position = (60, y)
                 y -= 90
                 if(item["name"] == "ladder"):
@@ -461,7 +446,8 @@ class Blackboard(arcade.View):
 
         # exist big exam_paper
         if(self.pre_action == "click exam paper" and not exam_paper.collides_with_point((x, y))):
-            ori = arcade.load_texture("img/items/blackboard_考卷.jpg")
+            path = os.path.join(c_path, "img/items/blackboard_考卷.jpg")
+            ori = arcade.load_texture(path)
             exam_paper.texture = ori
             exam_paper.hit_box = exam_paper.texture.hit_box_points
             exam_paper.scale = 0.1
@@ -472,7 +458,8 @@ class Blackboard(arcade.View):
         
         # exist big dirty_blackboard
         elif(self.pre_action == "click dirty blackboard" and not dirty_blackboard.collides_with_point((x, y))):
-            ori = arcade.load_texture("img/items/blackboard_髒黑板.jpg")
+            path = os.path.join(c_path, "img/items/blackboard_髒黑板.jpg")
+            ori = arcade.load_texture(path)
             dirty_blackboard.texture = ori
             dirty_blackboard.hit_box = dirty_blackboard.texture.hit_box_points
             dirty_blackboard.scale = 0.18
@@ -485,15 +472,18 @@ class Blackboard(arcade.View):
         elif(exam_paper.collides_with_point((x, y))):
             # 有拿紅筆，顯示批改，背包移除紅筆
             if(self.pre_action == "click red pen"):
-                big = arcade.load_texture("img/items/blackboard_考卷_放大批改.jpg")
+                path = os.path.join(c_path, "img/items/blackboard_考卷_放大批改.jpg")
+                big = arcade.load_texture(path)
                 display_items["exam_paper"] = 2     # 紀錄為已批改
                 backpack[5]["display"] = 2
             # 批改過了，顯示批改
             elif(display_items["exam_paper"] == 2):
-                big = arcade.load_texture("img/items/blackboard_考卷_放大批改.jpg")
+                path = os.path.join(c_path, "img/items/blackboard_考卷_放大批改.jpg")
+                big = arcade.load_texture(path)
             # 初始，顯示未批改
             else:
-                big = arcade.load_texture("img/items/blackboard_考卷_放大未批改.jpg")
+                path = os.path.join(c_path, "img/items/blackboard_考卷_放大未批改.jpg")
+                big = arcade.load_texture(path)
             exam_paper.texture = big
             exam_paper.hit_box = exam_paper.texture.hit_box_points
             exam_paper.scale = 0.55
@@ -505,14 +495,16 @@ class Blackboard(arcade.View):
         elif(dirty_blackboard.collides_with_point((x, y))):
             # 有梯子，有拿板擦，顯示乾淨黑板
             if(display_items["ladder"] and self.pre_action == "click eraser"):
-                big = arcade.load_texture("img/items/blackboard_髒黑板_放大乾淨.jpg")
+                path = os.path.join(c_path, "img/items/blackboard_髒黑板_放大乾淨.jpg")
+                big = arcade.load_texture(path)
                 display_items["eraser"] = True
                 backpack[4]["display"] = 2
                 display_items["dirty_blackboard"] = 2
                 self.pre_action = None
             # 之前擦乾淨了
             elif(display_items["dirty_blackboard"] == 2):
-                big = arcade.load_texture("img/items/blackboard_髒黑板_放大乾淨.jpg")
+                path = os.path.join(c_path, "img/items/blackboard_髒黑板_放大乾淨.jpg")
+                big = arcade.load_texture(path)
             # 拿梯子，把梯子放上去
             elif(self.pre_action == "click ladder"):
                 display_items["ladder"] = True
@@ -522,7 +514,8 @@ class Blackboard(arcade.View):
                 return
             # 有梯子，無板擦，顯示髒黑板
             elif(display_items["ladder"]):
-                big = arcade.load_texture("img/items/blackboard_髒黑板_放大髒.jpg")
+                path = os.path.join(c_path, "img/items/blackboard_髒黑板_放大髒.jpg")
+                big = arcade.load_texture(path)
             # 初始，無梯子無法點選
             else:
                 return
@@ -655,14 +648,16 @@ class Door(arcade.View):
     def setup(self):
         # background
         init = "img/background/door_init.jpg"
-        bg = arcade.Sprite(init, 0.68)
+        path = os.path.join(c_path, init)
+        bg = arcade.Sprite(path, 0.68)
         bg.center_x = 560
         bg.center_y = 325
         self.scene.add_sprite("Background", bg)
         self.sprite_list.append(bg)
 
         # control
-        arrow_down = arcade.Sprite("img/control/arrow_down.png", CONTROL_SCALING)
+        path = os.path.join(c_path, "img/control/arrow_down.png")
+        arrow_down = arcade.Sprite(path, CONTROL_SCALING)
         arrow_down.center_x = 560
         arrow_down.center_y = 30
         arrow_down.alpha = CONTROL_ALPHA
@@ -670,7 +665,8 @@ class Door(arcade.View):
         self.sprite_list.append(arrow_down)
 
         # items
-        oj_box = arcade.Sprite("img/items/door_oj 寶箱.jpg", 0.135)
+        path = os.path.join(c_path, "img/items/door_oj 寶箱.jpg")
+        oj_box = arcade.Sprite(path, 0.135)
         oj_box.position = (230, 349)
         self.scene.add_sprite("Items", oj_box)
         self.item_list.append({
@@ -679,8 +675,9 @@ class Door(arcade.View):
             "show big": False
         })
         self.sprite_list.append(oj_box)
-
-        door = arcade.Sprite("img/items/door.jpg", 0.27)
+        
+        path = os.path.join(c_path, "img/items/door.jpg")
+        door = arcade.Sprite(path, 0.27)
         door.position = (640, 225)
         self.scene.add_sprite("Items", door)
         self.item_list.append({
@@ -690,7 +687,8 @@ class Door(arcade.View):
         })
         self.sprite_list.append(door)
 
-        rag = arcade.Sprite("img/items/door_抹布.jpg", 0.1)
+        path = os.path.join(c_path, "img/items/door_抹布.jpg")
+        rag = arcade.Sprite(path, 0.1)
         rag.position = (190, 150)
         self.scene.add_sprite("rag", rag)
         self.item_list.append({
@@ -704,7 +702,8 @@ class Door(arcade.View):
         # door
         x = 460
         for i in range(2):
-            btn = arcade.Sprite("img/items/door_門口密碼放.jpg", 0.18)
+            path = os.path.join(c_path, "img/items/door_門口密碼放.jpg")
+            btn = arcade.Sprite(path, 0.18)
             btn.position = (x, 280)
             x += 200
             self.scene.add_sprite("door_password", btn)
@@ -719,7 +718,8 @@ class Door(arcade.View):
         # oj box
         x = 374
         for i in range(4):
-            color = arcade.Sprite("img/items/door_oj 寶箱0.jpg", 0.117)
+            path = os.path.join(c_path, "img/items/door_oj 寶箱0.jpg")
+            color = arcade.Sprite(path, 0.117)
             color.position = (x, 227)
             x += 115
             self.scene.add_sprite("ojbox_password", color)
@@ -735,7 +735,8 @@ class Door(arcade.View):
             item = backpack[i]
             # should show in backpack, create its sprite
             if(item["display"] == 1):
-                sp = arcade.Sprite(item["path"], 0.08)
+                path = os.path.join(c_path, item["path"])
+                sp = arcade.Sprite(path, 0.08)
                 sp.position = (60, y)
                 y -= 90
                 self.scene.add_sprite("Backpack", sp)
@@ -753,7 +754,8 @@ class Door(arcade.View):
 
         # rag is in scene, may be added to backpack
         if(not backpack[0]["display"]):
-            backpack_rag = arcade.Sprite("img/backpack/backpack_rag.jpg", 0.08)
+            path = os.path.join(c_path, "img/backpack/backpack_rag.jpg")
+            backpack_rag = arcade.Sprite(path, 0.08)
             backpack_rag.position = (60, y)
             y -= 90
             self.scene.add_sprite("backpack_rag", backpack_rag)
@@ -766,7 +768,8 @@ class Door(arcade.View):
 
         # ladder in scene(oj box), may be added to backpack
         if(not backpack[3]["display"]):
-            backpack_ladder = arcade.Sprite("img/backpack/backpack_ladder.jpg", 0.08)
+            path = os.path.join(c_path, "img/backpack/backpack_ladder.jpg")
+            backpack_ladder = arcade.Sprite(path, 0.08)
             backpack_ladder.position = (60, y)
             self.scene.add_sprite("backpack_ladder", backpack_ladder)
             self.backpack_list.append({
@@ -860,7 +863,8 @@ class Door(arcade.View):
         # exist big oj_box
         if(self.item_list[0]["show big"] and not oj_box.collides_with_point((x, y))):
             # # print("exist big oj box")
-            ori = arcade.load_texture("img/items/door_oj 寶箱.jpg")
+            path = os.path.join(c_path, "img/items/door_oj 寶箱.jpg")
+            ori = arcade.load_texture(path)
             oj_box.texture = ori
             oj_box.hit_box = oj_box.texture.hit_box_points
             oj_box.scale = 0.135
@@ -873,7 +877,8 @@ class Door(arcade.View):
 
             # init colors
             for i in range(4):
-                self.color_list[i]["sprite"].texture = arcade.load_texture("img/items/door_oj 寶箱0.jpg")
+                path = os.path.join(c_path, "img/items/door_oj 寶箱0.jpg")
+                self.color_list[i]["sprite"].texture = arcade.load_texture(path)
 
             # if box open, add ladder to backpack
             if(backpack[3]["display"] == 0 and display_items["oj_box"] == 2):
@@ -883,7 +888,8 @@ class Door(arcade.View):
 
         # exist big door
         elif(self.item_list[1]["show big"] and not door.collides_with_point((x, y))):
-            ori = arcade.load_texture("img/items/door.jpg")
+            path = os.path.join(c_path, "img/items/door.jpg")
+            ori = arcade.load_texture(path)
             door.texture = ori
             door.hit_box = door.texture.hit_box_points
             door.scale = 0.27
@@ -926,7 +932,8 @@ class Door(arcade.View):
                     if(color["sprite"].collides_with_point((x, y))):
                         color_id = (color["color"] + 1)%3
                         color["color"] = color_id
-                        color["sprite"].texture = arcade.load_texture(f"img/items/door_oj 寶箱{color_id}.jpg")
+                        path = os.path.join(c_path, f"img/items/door_oj 寶箱{color_id}.jpg")
+                        color["sprite"].texture = arcade.load_texture(path)
                         self.ojbox_pw[i] = color_id
                 
                 # check whether the password is correct
@@ -937,16 +944,19 @@ class Door(arcade.View):
                         correct = False
                         break
                 if(correct):
-                    oj_box.texture = arcade.load_texture("img/items/door_oj 寶箱_大開.jpg")
+                    path = os.path.join(c_path, "img/items/door_oj 寶箱_大開.jpg")
+                    oj_box.texture = arcade.load_texture(path)
                     oj_box.scale = 0.55
                     oj_box.position = (560, 325)
                     display_items["oj_box"] = 2
 
             else:
                 if(display_items["oj_box"] == 2):   # 已解密
-                    big = arcade.load_texture("img/items/door_oj 寶箱_大開.jpg")
+                    path = os.path.join(c_path, "img/items/door_oj 寶箱_大開.jpg")
+                    big = arcade.load_texture(path)
                 else:                               # 待解密
-                    big = arcade.load_texture("img/items/door_oj 寶箱_大關.jpg")
+                    path = os.path.join(c_path, "img/items/door_oj 寶箱_大關.jpg")
+                    big = arcade.load_texture(path)
                 oj_box.texture = big
                 oj_box.hit_box = oj_box.texture.hit_box_points
                 oj_box.scale = 0.55
@@ -970,7 +980,8 @@ class Door(arcade.View):
 
                 # password correct, open
                 if(self.door_pw == "1011"):
-                    big = arcade.load_texture("img/items/door_門口開門.jpg")
+                    path = os.path.join(c_path, "img/items/door_門口開門.jpg")
+                    big = arcade.load_texture(path)
                     display_items["door"] = 2
                     print("correct")
                     self.is_exist = True
@@ -978,10 +989,12 @@ class Door(arcade.View):
                     return
             # 未解密
             elif(display_items["door"] == 1):
-                big = arcade.load_texture("img/items/door_門口密碼.jpg")
+                path = os.path.join(c_path, "img/items/door_門口密碼.jpg")
+                big = arcade.load_texture(path)
             # 解密，開門
             else:
-                big = arcade.load_texture("img/items/door_門口開門.jpg")
+                path = os.path.join(c_path, "img/items/door_門口開門.jpg")
+                big = arcade.load_texture(path)
             door.texture = big
             door.hit_box = door.texture.hit_box_points
             door.scale = 0.55
@@ -1013,9 +1026,11 @@ class Door(arcade.View):
             if(btn["click"]):
                 btn["time"] += delta_time
                 if(btn["time"] < 0.2):
-                    btn["sprite"].texture = arcade.load_texture("img/items/door_門口密碼按.jpg")
+                    path = os.path.join(c_path, "img/items/door_門口密碼按.jpg")
+                    btn["sprite"].texture = arcade.load_texture(path)
                 else:
-                    btn["sprite"].texture = arcade.load_texture("img/items/door_門口密碼放.jpg")
+                    path = os.path.join(c_path, "img/items/door_門口密碼放.jpg")
+                    btn["sprite"].texture = arcade.load_texture(path)
                     btn["time"] = 0
                     btn["click"] = False
 
@@ -1067,14 +1082,16 @@ class Stage(arcade.View):
     def setup(self):
         # background
         init = "img/background/stage_init.jpg"
-        bg = arcade.Sprite(init, 0.69)
+        path = os.path.join(c_path, init)
+        bg = arcade.Sprite(path, 0.69)
         bg.center_x = 563
         bg.center_y = 325
         self.scene.add_sprite("Background", bg)
         self.sprite_list.append(bg)
 
         # control
-        arrow_down = arcade.Sprite("img/control/arrow_down.png", CONTROL_SCALING)
+        path = os.path.join(c_path, "img/control/arrow_down.png")
+        arrow_down = arcade.Sprite(path, CONTROL_SCALING)
         arrow_down.center_x = 560
         arrow_down.center_y = 30
         arrow_down.alpha = CONTROL_ALPHA
@@ -1082,7 +1099,8 @@ class Stage(arcade.View):
         self.sprite_list.append(arrow_down)
 
         # items
-        computer = arcade.Sprite("img/items/stage_computer.jpg", 0.208)
+        path = os.path.join(c_path, "img/items/stage_computer.jpg")
+        computer = arcade.Sprite(path, 0.208)
         computer.position = (501, 370.5)
         self.scene.add_sprite("Items", computer)
         self.item_list.append({
@@ -1093,9 +1111,11 @@ class Stage(arcade.View):
         self.sprite_list.append(computer)
 
         if(self.show_drawer == 0):
-            drawer_big = arcade.Sprite("img/items/stage_drawer_大解謎.jpg", 0.55)
+            path = os.path.join(c_path, "img/items/stage_drawer_大解謎.jpg")
+            drawer_big = arcade.Sprite(path, 0.55)
         else:
-            drawer_big = arcade.Sprite("img/items/stage_drawer_大開.jpg", 0.55)
+            path = os.path.join(c_path, "img/items/stage_drawer_大開.jpg")
+            drawer_big = arcade.Sprite(path, 0.55)
         drawer_big.position = (560, 325)
         self.scene.add_sprite("drawer", drawer_big)
         self.sprite_list.append(drawer_big)
@@ -1104,7 +1124,8 @@ class Stage(arcade.View):
         # 電腦密碼
         x = 425
         for i in range(5):
-            digit = arcade.Sprite("img/items/stage_computer8.jpg", 0.25)
+            path = os.path.join(c_path, "img/items/stage_computer8.jpg")
+            digit = arcade.Sprite(path, 0.25)
             digit.position = (x, 235)
             x += 65
             self.scene.add_sprite("digit", digit)
@@ -1115,7 +1136,8 @@ class Stage(arcade.View):
             self.sprite_list.append(digit)
 
         # 電腦滑鼠軌跡
-        mouse = arcade.Sprite("img/control/mouse.png")
+        path = os.path.join(c_path, "img/control/mouse.png")
+        mouse = arcade.Sprite(path)
         mouse.position = (560, 325)
         self.scene.add_sprite("mouse", mouse)
         self.mouse_sprite.append({
@@ -1129,7 +1151,8 @@ class Stage(arcade.View):
         for _ in range(4):
             x = 410
             for _ in range(4):
-                block = arcade.Sprite("img/items/stage_drawer0.jpg", 0.1)
+                path = os.path.join(c_path, "img/items/stage_drawer0.jpg")
+                block = arcade.Sprite(path, 0.1)
                 block.position = (x, y)
                 x += 100
                 self.scene.add_sprite("block", block)
@@ -1146,7 +1169,8 @@ class Stage(arcade.View):
             item = backpack[i]
             # should show in backpack, create its sprite
             if(item["display"] == 1):
-                sp = arcade.Sprite(item["path"], 0.08)
+                path = os.path.join(c_path, item["path"])
+                sp = arcade.Sprite(path, 0.08)
                 sp.position = (60, y)
                 y -= 90
                 self.scene.add_sprite("Backpack", sp)
@@ -1161,7 +1185,8 @@ class Stage(arcade.View):
                     self.has_eraser = True
         
         if(not backpack[4]["display"]):
-            eraser = arcade.Sprite("img/backpack/backpack_eraser.jpg", 0.08)
+            path = os.path.join(c_path, "img/backpack/backpack_eraser.jpg")
+            eraser = arcade.Sprite(path, 0.08)
             eraser.position = (60, y)
             y -= 90
             self.scene.add_sprite("eraser", eraser)
@@ -1237,7 +1262,8 @@ class Stage(arcade.View):
         
         # exist computer
         if(self.item_list[0]["show big"] and not computer.collides_with_point((x, y))):
-            computer.texture = arcade.load_texture("img/items/stage_computer.jpg")
+            path = os.path.join(c_path, "img/items/stage_computer.jpg")
+            computer.texture = arcade.load_texture(path)
             computer.hit_box = computer.texture.hit_box_points
             computer.scale = 0.208
             computer.position = (501, 370.5)
@@ -1245,7 +1271,8 @@ class Stage(arcade.View):
             self.mouse_sprite[0]["time"] = 0
             # init password
             for i in range(5):
-                self.digit_list[i]["sprite"].texture = arcade.load_texture("img/items/stage_computer8.jpg")
+                path = os.path.join(c_path, "img/items/stage_computer8.jpg")
+                self.digit_list[i]["sprite"].texture = arcade.load_texture(path)
                 self.computer_pw[i] = 8
 
         # exist drawer
@@ -1255,7 +1282,8 @@ class Stage(arcade.View):
             # init password
             for i in range(16):
                 self.block_list[i]["state"] = 0
-                self.block_list[i]["sprite"].texture = arcade.load_texture("img/items/stage_drawer0.jpg")
+                path = os.path.join(c_path, "img/items/stage_drawer0.jpg")
+                self.block_list[i]["sprite"].texture = arcade.load_texture(path)
                 self.drawer_pw[int(i/4)][i%4] = 0
             if(backpack[4]["display"] == 0 and display_items["eraser"] == 1):
                 backpack[4]["display"] = True
@@ -1264,13 +1292,15 @@ class Stage(arcade.View):
         elif(not self.pre_action == "click drawer" and computer.collides_with_point((x, y))):
             # 解謎
             if(display_items["mouse_computer"] == 1):
-                big = arcade.load_texture("img/items/stage_computer_大密碼.jpg")
+                path = os.path.join(c_path, "img/items/stage_computer_大密碼.jpg")
+                big = arcade.load_texture(path)
                 for i in range(5):
                     digit = self.digit_list[i]["sprite"]
                     if(digit.collides_with_point((x, y))):
                         val = (self.digit_list[i]["val"] + 1) % 10
                         self.digit_list[i]["val"] = val
-                        digit.texture = arcade.load_texture(f"img/items/stage_computer{val}.jpg")
+                        path = os.path.join(c_path, f"img/items/stage_computer{val}.jpg")
+                        digit.texture = arcade.load_texture(path)
                         self.computer_pw[i] = val
                 correct = True
                 ans = [7, 1, 6, 5, 0]
@@ -1279,12 +1309,14 @@ class Stage(arcade.View):
                         correct = False
                         break
                 if(correct):
-                    big = arcade.load_texture("img/items/stage_computer_大.jpg")
+                    path = os.path.join(c_path, "img/items/stage_computer_大.jpg")
+                    big = arcade.load_texture(path)
                     display_items["mouse_computer"] = 2
                         
             # 已解謎，顯示滑鼠軌跡
             else:
-                big = arcade.load_texture("img/items/stage_computer_大.jpg")
+                path = os.path.join(c_path, "img/items/stage_computer_大.jpg")
+                big = arcade.load_texture(path)
             computer.texture = big
             computer.hit_box = computer.texture.hit_box_points
             computer.scale = 0.55
@@ -1297,7 +1329,8 @@ class Stage(arcade.View):
                 if(self.block_list[i]["sprite"].collides_with_point((x, y))):
                     idx = (self.block_list[i]["state"] + 1) % 2
                     self.block_list[i]["state"] = idx
-                    self.block_list[i]["sprite"].texture = arcade.load_texture(f"img/items/stage_drawer{idx}.jpg")
+                    path = os.path.join(c_path, f"img/items/stage_drawer{idx}.jpg")
+                    self.block_list[i]["sprite"].texture = arcade.load_texture(path)
                     self.drawer_pw[int(i/4)][i%4] = idx
             # check valid
             correct = True
@@ -1312,7 +1345,8 @@ class Stage(arcade.View):
                         break
             if(correct):
                 self.show_drawer = 2
-                self.scene["drawer"][0].texture = arcade.load_texture("img/items/stage_drawer_大開.jpg")
+                path = os.path.join(c_path, "img/items/stage_drawer_大開.jpg")
+                self.scene["drawer"][0].texture = arcade.load_texture(path)
                 self.pre_action = "click drawer"
                 display_items["eraser"] = 1
         
@@ -1326,7 +1360,8 @@ class Stage(arcade.View):
             # case 2. 已打開獲得板擦
             else:
                 self.show_drawer = 2
-                self.scene["drawer"][0].texture = arcade.load_texture("img/items/stage_drawer_大開.jpg")
+                path = os.path.join(c_path, "img/items/stage_drawer_大開.jpg")
+                self.scene["drawer"][0].texture = arcade.load_texture(path)
         
         # press control?
         elif(is_ctl != -1):
@@ -1435,14 +1470,16 @@ class Corner(arcade.View):
     def setup(self):
         # background
         init = "img/background/corner_init.jpg"
-        bg = arcade.Sprite(init, 0.678)
+        path = os.path.join(c_path, init)
+        bg = arcade.Sprite(path, 0.678)
         bg.center_x = 560
         bg.center_y = 325
         self.scene.add_sprite("Background", bg)
         self.sprite_list.append(bg)
 
         # control
-        arrow_down = arcade.Sprite("img/control/arrow_down.png", CONTROL_SCALING)
+        path = os.path.join(c_path, "img/control/arrow_down.png")
+        arrow_down = arcade.Sprite(path, CONTROL_SCALING)
         arrow_down.center_x = 560
         arrow_down.center_y = 30
         arrow_down.alpha = CONTROL_ALPHA
@@ -1450,7 +1487,8 @@ class Corner(arcade.View):
         self.sprite_list.append(arrow_down)
 
         # items
-        box = arcade.Sprite("img/items/corner_box.jpg", 0.24)
+        path = os.path.join(c_path, "img/items/corner_box.jpg")
+        box = arcade.Sprite(path, 0.24)
         box.position = (820, 314)
         self.scene.add_sprite("Items", box)
         self.item_list.append({
@@ -1460,7 +1498,8 @@ class Corner(arcade.View):
         })
         self.sprite_list.append(box)
 
-        phone = arcade.Sprite("img/items/corner_phone.jpg", 0.12)
+        path = os.path.join(c_path, "img/items/corner_phone.jpg")
+        phone = arcade.Sprite(path, 0.12)
         phone.position = (410, 240)
         self.scene.add_sprite("Items", phone)
         self.item_list.append({
@@ -1473,7 +1512,8 @@ class Corner(arcade.View):
         # 解謎
         x = 430
         for i in range(3):
-            word = arcade.Sprite("img/items/corner_box0.jpg", 0.11)
+            path = os.path.join(c_path, "img/items/corner_box0.jpg")
+            word = arcade.Sprite(path, 0.11)
             word.position = (x, 300)
             x += 120
             self.scene.add_sprite("word", word)
@@ -1486,7 +1526,8 @@ class Corner(arcade.View):
 
         x = 430
         for i in range(3):
-            arrow = arcade.Sprite("img/items/corner_phone_arrow.jpg", 0.1)
+            path = os.path.join(c_path, "img/items/corner_phone_arrow.jpg")
+            arrow = arcade.Sprite(path, 0.1)
             arrow.position = (x, 300)
             arrow.angle = 180
             x += 120
@@ -1503,7 +1544,8 @@ class Corner(arcade.View):
             item = backpack[i]
             # should show in backpack, create its sprite
             if(item["display"] == 1):
-                sp = arcade.Sprite(item["path"], 0.08)
+                path = os.path.join(c_path, item["path"])
+                sp = arcade.Sprite(path, 0.08)
                 sp.position = (60, y)
                 y -= 90
                 self.scene.add_sprite("Backpack", sp)
@@ -1520,7 +1562,8 @@ class Corner(arcade.View):
                 self.sprite_list.append(sp)
 
         if(not backpack[2]["display"]):
-            charger = arcade.Sprite("img/backpack/backpack_charger.jpg", 0.08)
+            path = os.path.join(c_path, "img/backpack/backpack_charger.jpg")
+            charger = arcade.Sprite(path, 0.08)
             charger.position = (60, y)
             y -= 90
             self.scene.add_sprite("backpack_charger", charger)
@@ -1532,7 +1575,8 @@ class Corner(arcade.View):
             self.sprite_list.append(charger)
 
         if(not backpack[5]["display"]):
-            red_pen = arcade.Sprite("img/backpack/backpack_red pen.jpg", 0.08)
+            path = os.path.join(c_path, "img/backpack/backpack_red pen.jpg")
+            red_pen = arcade.Sprite(path, 0.08)
             red_pen.position = (60, y)
             y -= 90
             self.scene.add_sprite("backpack_red_pen", red_pen)
@@ -1604,7 +1648,8 @@ class Corner(arcade.View):
 
         # exist box
         if(self.item_list[0]["show big"] and not box.collides_with_point((x, y))):
-            box.texture = arcade.load_texture("img/items/corner_box.jpg")
+            path = os.path.join(c_path, "img/items/corner_box.jpg")
+            box.texture = arcade.load_texture(path)
             box.hit_box = box.texture.hit_box_points
             box.scale = 0.24
             box.position = (820, 314)
@@ -1614,13 +1659,15 @@ class Corner(arcade.View):
             # init password
             for i in range(3):
                 self.box_pw[i] = 0
-                self.word_list[i]["sprite"].texture = arcade.load_texture("img/items/corner_box0.jpg")
+                path = os.path.join(c_path, "img/items/corner_box0.jpg")
+                self.word_list[i]["sprite"].texture = arcade.load_texture(path)
             if(backpack[5]["display"] == 0 and display_items["red_pen_box"] == 2):
                 backpack[5]["display"] = True
         
         # exist phone
         elif(self.item_list[1]["show big"] and not phone.collides_with_point((x, y))):
-            phone.texture = arcade.load_texture("img/items/corner_phone.jpg")
+            path = os.path.join(c_path, "img/items/corner_phone.jpg")
+            phone.texture = arcade.load_texture(path)
             phone.hit_box = phone.texture.hit_box_points
             phone.scale = 0.12
             phone.position = (410, 240)
@@ -1640,13 +1687,15 @@ class Corner(arcade.View):
         elif(not self.item_list[1]["show big"] and box.collides_with_point((x, y))):
             # 解謎
             if(display_items["red_pen_box"] == 1):
-                big = arcade.load_texture("img/items/corner_box_close.jpg")
+                path = os.path.join(c_path, "img/items/corner_box_close.jpg")
+                big = arcade.load_texture(path)
                 for i in range(3):
                     if(self.word_list[i]["sprite"].collides_with_point((x, y))):
                         idx = (self.word_list[i]["char"] + 1) % 5
                         self.word_list[i]["char"] = idx
                         self.box_pw[i] = idx
-                        self.word_list[i]["sprite"].texture = arcade.load_texture(f"img/items/corner_box{idx}.jpg")
+                        path = os.path.join(c_path, f"img/items/corner_box{idx}.jpg")
+                        self.word_list[i]["sprite"].texture = arcade.load_texture(path)
 
                 correct = True
                 ans = [1, 2, 4]
@@ -1656,10 +1705,12 @@ class Corner(arcade.View):
                         break
                 if(correct):
                     display_items["red_pen_box"] = 2
-                    big = arcade.load_texture("img/items/corner_box_open.jpg")
+                    path = os.path.join(c_path, "img/items/corner_box_open.jpg")
+                    big = arcade.load_texture(path)
             # 已解密
             else:
-                big = arcade.load_texture("img/items/corner_box_open.jpg")
+                path = os.path.join(c_path, "img/items/corner_box_open.jpg")
+                big = arcade.load_texture(path)
             box.texture = big
             box.hit_box = box.texture.hit_box_points
             box.scale = 0.55
@@ -1684,29 +1735,36 @@ class Corner(arcade.View):
                         break
                 if(correct):
                     display_items["phone"] = 2
-                    phone.texture = arcade.load_texture("img/items/corner_phone_1.jpg")
+                    path = os.path.join(c_path, "img/items/corner_phone_1.jpg")
+                    phone.texture = arcade.load_texture(path)
 
             elif(display_items["phone"] == 2):
                 display_items["phone"] = 3
-                phone.texture = arcade.load_texture("img/items/corner_phone_2.jpg")
+                path = os.path.join(c_path, "img/items/corner_box_phone_2.jpg")
+                phone.texture = arcade.load_texture(path)
             elif(display_items["phone"] == 3):
                 display_items["phone"] = 4
-                phone.texture = arcade.load_texture("img/items/corner_charger_big.jpg")
+                path = os.path.join(c_path, "img/items/corner_charger_big.jpg")
+                phone.texture = arcade.load_texture(path)
 
         # click phone
         elif(not self.item_list[0]["show big"] and phone.collides_with_point((x, y))):
             # 解密
             if(display_items["phone"] == 1):
-                big = arcade.load_texture("img/items/corner_phone_lock.jpg")
+                path = os.path.join(c_path, "img/items/corner_phone_lock.jpg")
+                big = arcade.load_texture(path)
             # 已解密
             elif(display_items["phone"] == 2):
                 display_items["phone"] = 3
-                big = arcade.load_texture("img/items/corner_phone_2.jpg")
+                path = os.path.join(c_path, "img/items/corner_phone_2.jpg")
+                big = arcade.load_texture(path)
             elif(display_items["phone"] == 3):
                 display_items["phone"] = 4
-                big = arcade.load_texture("img/items/corner_charger_big.jpg")
+                path = os.path.join(c_path, "img/items/corner_charger_big.jpg")
+                big = arcade.load_texture(path)
             else:
-                big = arcade.load_texture("img/items/corner_charger_big.jpg")
+                path = os.path.join(c_path, "img/items/corner_charger_big.jpg")
+                big = arcade.load_texture(path)
             phone.texture = big
             phone.hit_box = phone.texture.hit_box_points
             phone.scale = 0.55
@@ -1790,14 +1848,16 @@ class Table(arcade.View):
     def setup(self):
         # background
         init = "img/background/table_init.jpg"
-        bg = arcade.Sprite(init, 0.68)
+        path = os.path.join(c_path, init)
+        bg = arcade.Sprite(path, 0.68)
         bg.center_x = 560
         bg.center_y = 325
         self.scene.add_sprite("Background", bg)
         self.sprite_list.append(bg)
 
         # control
-        arrow_down = arcade.Sprite("img/control/arrow_down.png", CONTROL_SCALING)
+        path = os.path.join(c_path, "img/control/arrow_down.png")
+        arrow_down = arcade.Sprite(path, CONTROL_SCALING)
         arrow_down.center_x = 560
         arrow_down.center_y = 30
         arrow_down.alpha = CONTROL_ALPHA
@@ -1805,7 +1865,8 @@ class Table(arcade.View):
         self.sprite_list.append(arrow_down)
 
         # items
-        computer = arcade.Sprite("img/items/table_computer.jpg", 0.33)
+        path = os.path.join(c_path, "img/items/table_computer.jpg")
+        computer = arcade.Sprite(path, 0.33)
         computer.position = (358, 489)
         self.scene.add_sprite("Items", computer)
         self.item_list.append({
@@ -1815,7 +1876,8 @@ class Table(arcade.View):
         })
         self.sprite_list.append(computer)
 
-        name_list = arcade.Sprite("img/items/table_點名表.jpg", 0.23)
+        path = os.path.join(c_path, "img/items/table_點名表.jpg")
+        name_list = arcade.Sprite(path, 0.23)
         name_list.position = (655, 250)
         self.scene.add_sprite("Items", name_list)
         self.item_list.append({
@@ -1826,10 +1888,12 @@ class Table(arcade.View):
         self.sprite_list.append(name_list)
 
         if(display_items["drink"] == 2):
-            drink = arcade.Sprite("img/items/table_打翻_密碼.jpg", 0.35)
+            path = os.path.join(c_path, "img/items/table_打翻_密碼.jpg")
+            drink = arcade.Sprite(path, 0.35)
             drink.position = (790, 470)
         else:
-            drink = arcade.Sprite("img/items/table_打翻.jpg", 0.18)
+            path = os.path.join(c_path, "img/items/table_打翻.jpg")
+            drink = arcade.Sprite(path, 0.18)
             drink.position = (840, 470)
         self.scene.add_sprite("Items", drink)
         self.item_list.append({
@@ -1845,7 +1909,8 @@ class Table(arcade.View):
             item = backpack[i]
             # should show in backpack, create its sprite
             if(item["display"] == 1):
-                sp = arcade.Sprite(item["path"], 0.08)
+                path = os.path.join(c_path, item["path"])
+                sp = arcade.Sprite(path, 0.08)
                 sp.position = (60, y)
                 y -= 90
                 if(item["name"] == "rag"):
@@ -1916,7 +1981,8 @@ class Table(arcade.View):
 
         # exist computer
         if(self.item_list[0]["show big"] and not computer.collides_with_point((x, y))):
-            computer.texture = arcade.load_texture("img/items/table_computer.jpg")
+            path = os.path.join(c_path, "img/items/table_computer.jpg")
+            computer.texture = arcade.load_texture(path)
             computer.hit_box = computer.texture.hit_box_points
             computer.scale = 0.33
             computer.position = (358, 489)
@@ -1924,7 +1990,8 @@ class Table(arcade.View):
 
         # exist name_list
         elif(self.item_list[1]["show big"] and not name_list.collides_with_point((x, y))):
-            name_list.texture = arcade.load_texture("img/items/table_點名表.jpg")
+            path = os.path.join(c_path, "img/items/table_點名表.jpg")
+            name_list.texture = arcade.load_texture(path)
             name_list.hit_box = name_list.texture.hit_box_points
             name_list.scale = 0.23
             name_list.position = (655, 250)
@@ -1933,11 +2000,13 @@ class Table(arcade.View):
         # exist drink
         elif(self.item_list[2]["show big"] and not drink.collides_with_point((x, y))):
             if(display_items["drink"] == 2):
-                drink.texture = arcade.load_texture("img/items/table_打翻_密碼.jpg")
+                path = os.path.join(c_path, "img/items/table_打翻_密碼.jpg")
+                drink.texture = arcade.load_texture(path)
                 drink.scale = 0.35
                 drink.position = (790, 470)
             else:
-                drink.texture = arcade.load_texture("img/items/table_打翻.jpg")
+                path = os.path.join(c_path, "img/items/table_打翻.jpg")
+                drink.texture = arcade.load_texture(path)
                 drink.scale = 0.18
                 drink.position = (840, 470)
             drink.hit_box = drink.texture.hit_box_points
@@ -1946,13 +2015,16 @@ class Table(arcade.View):
         # click computer
         elif(computer.collides_with_point((x, y))):
             if(self.pre_action == "click charger"):
-                big = arcade.load_texture("img/items/table_computer_大oj.jpg")
+                path = os.path.join(c_path, "img/items/table_computer_大oj.jpg")
+                big = arcade.load_texture(path)
                 display_items["oj_computer"] = 2
                 backpack[2]["display"] = 2
             elif(display_items["oj_computer"] == 2):
-                big = arcade.load_texture("img/items/table_computer_大oj.jpg")
+                path = os.path.join(c_path, "img/items/table_computer_大oj.jpg")
+                big = arcade.load_texture(path)
             else:
-                big = arcade.load_texture("img/items/table_computer_大沒電.jpg")
+                path = os.path.join(c_path, "img/items/table_computer_大沒電.jpg")
+                big = arcade.load_texture(path)
 
             computer.texture = big
             computer.hit_box = computer.texture.hit_box_points
@@ -1962,7 +2034,8 @@ class Table(arcade.View):
 
         # click name_list
         elif(name_list.collides_with_point((x, y))):
-            name_list.texture = arcade.load_texture("img/items/table_點名表_大.jpg")
+            path = os.path.join(c_path, "img/items/table_點名表_大.jpg")
+            name_list.texture = arcade.load_texture(path)
             name_list.hit_box = name_list.texture.hit_box_points
             name_list.scale = 0.55
             name_list.position = (560, 325)
@@ -1971,13 +2044,16 @@ class Table(arcade.View):
         # click drink
         elif(drink.collides_with_point((x, y))):
             if(self.pre_action == "click rag"):
-                big = arcade.load_texture("img/items/table_打翻_大乾.jpg")
+                path = os.path.join(c_path, "img/items/table_打翻_大乾.jpg")
+                big = arcade.load_texture(path)
                 display_items["drink"] = 2
                 backpack[0]["display"] = 2
             elif(display_items["drink"] == 2):
-                big = arcade.load_texture("img/items/table_打翻_大乾.jpg")
+                path = os.path.join(c_path, "img/items/table_打翻_大乾.jpg")
+                big = arcade.load_texture(path)
             else:
-                big = arcade.load_texture("img/items/table_打翻_大水.jpg")
+                path = os.path.join(c_path, "img/items/table_打翻_大水.jpg")
+                big = arcade.load_texture(path)
             drink.texture = big
             drink.hit_box = drink.texture.hit_box_points
             drink.scale = 0.55
