@@ -7,5 +7,5 @@ The first room is room114, and the second room is room022. You have to escape th
 The environment is python 3.11, module: arcade
 
 ## download link:
-You can download this game directly from this page:
+You can download this game directly from this page: \
 [link](https://ann1106.itch.io/escape-nycucs)
