@@ -11,4 +11,6 @@ You can download this game directly from this page: \
 [link](https://ann1106.itch.io/escape-nycucs)
 
 if you want to run this source code, clone it and command: \
-`python game.py`
+```
+python game.py
+```
